@@ -2,33 +2,37 @@ import React from "react";
 import {
   Routes,
   Route,
-  Navigate,
-  Outlet,
 } from 'react-router-dom';
+import 'assets/App.css';
+import Header from "components/header";
 import Login from 'pages/login/login';
 import Dashboard from 'pages/dashboard/dashboard';
-
-const ProtectedRoute = ({ user, redirectPath = '/login' }) => {
-  if (!user) {
-    return <Navigate to={redirectPath} replace />;
-  }
-
-  return <Outlet />;
-};
-
+import HabitTrack from "pages/habittrack/habittrack";
+import Meals from "pages/meals/meals";
+import Worksignin from "pages/worksignin/worksignin";
+import Todolist from "pages/todolist/todolist";
+import Settings from "pages/settings/settings";
+import { AuthProvider, ProtectedRoute } from "components/authContextProvider";
+import Navigation from "components/navigation";
 function App() {
-  const [user, setUser] = React.useState(null);
   return (
-    <>
+    <AuthProvider>
+      <Navigation />
+      <Header />
       <Routes>
         <Route index element={<Login />} />
-        <Route path="login" element={<Login handleLogin={setUser}/>} />
-        <Route element={<ProtectedRoute user={user} />}>
+        <Route path="login" element={<Login />} />
+        <Route element={<ProtectedRoute />}>
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="habittrack" element={<HabitTrack />} />
+          <Route path="meals" element={<Meals />} />
+          <Route path="worksignin" element={<Worksignin />} />
+          <Route path="todolist" element={<Todolist />} />
+          <Route path="settings" element={<Settings />} />
         </Route>
-        <Route path="*" element={<p>There's nothing here: 404!</p>} />
+        <Route path="*" element={<span>There's nothing here: 404!</span>} />
       </Routes>
-    </>
+    </AuthProvider>
   );
 }
 

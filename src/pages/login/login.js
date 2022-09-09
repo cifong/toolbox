@@ -1,31 +1,32 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-export default function Login(props) {
-    const navigate = useNavigate();
+import { useAuth } from "hooks/customhooks";
+export default function Login() {
+    const { onLogin } = useAuth();
     const [username, setusername] = React.useState("");
     const [password, setpassword] = React.useState("");
-    const users = [{ username: "cifong", password: "1234" }];
+    const testpassword = 'qqqqqq';
     const handleSubmit = (e) => {
         e.preventDefault();
-        const account = users.find((user) => user.username === username);
-        if (account && account.password === password) {
-            props.handleLogin(account);
-            navigate("/dashboard");
+        if (password !== testpassword) {
+            return;
         }
+        onLogin(username);
     };
     return (
-        <div>
+        <div className="login-form">
             <form onSubmit={handleSubmit}>
                 <input
                     type="text"
                     name="Username"
                     value={username}
                     onChange={(e) => setusername(e.target.value)}
+                    autoComplete="off"
                 />
                 <input
                     type="password"
                     name="Password"
                     onChange={(e) => setpassword(e.target.value)}
+                    autoComplete="off"
                 />
                 <input type="submit" value="Submit" />
             </form>
