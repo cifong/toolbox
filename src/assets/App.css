@@ -1,11 +1,14 @@
-body {
+* {
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
 .header {
   width: 100vw;
   height: 12vh;
@@ -14,16 +17,18 @@ body {
   align-items: center;
   font-size: 2rem;
 }
+
 .login-form {
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .navbar {
   position: fixed;
-  box-sizing: border-box;
   background-color: #d9f0f7;
 }
+
 .navbar-brand {
   background-image: url('./logo.svg');
   background-position: center;
@@ -33,24 +38,28 @@ body {
   width: 10vh;
   transition: all 700ms;
 }
+
 .navbar-brand.active {
   width: 100vw;
   transform: rotate(2turn);
 }
+
 .navbar-menu {
   display: none;
 }
+
 .navbar-menu.active {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
+
 .navbar-item {
   padding: 1.5rem 1rem;
-  box-sizing: border-box;
   font-size: 1rem;
 }
+
 .container {
   display: flex;
   flex-direction: column;
@@ -58,6 +67,7 @@ body {
   align-items: center;
   gap: 1vh;
 }
+
 .time-process {
   height: 5vmin;
   width: 50vw;
@@ -65,3 +75,20 @@ body {
   text-align: center;
   border: #1a73e8 1px solid;
 }
+
+.habit-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+.habit-item-title {
+  width: 100%;
+  height: 7vh;
+  background-color: bisque;
+}
+.habit-item-section {
+  width: 14%;
+  height: 7vh;
+
+}
+

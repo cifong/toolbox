@@ -21,9 +21,9 @@ export default function Dashboard() {
     const dayStyle = {
         backgroundImage: `linear-gradient(to right, #f90 0%, #f90 ${dayProcess}%, white 0, white 100%)`
     };
-    const weekfirstday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay()).getTime();
-    const weeklastday = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 7 - now.getDay()).getTime();
-    const weekProcess = getNowPercent(weekfirstday, weeklastday);
+    const weekfirstday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - ((now.getDay() + 6) % 7));
+    const weeklastday = new Date(weekfirstday.getFullYear(), weekfirstday.getMonth(), weekfirstday.getDate() + 7);
+    const weekProcess = getNowPercent(weekfirstday.getTime(), weeklastday.getTime());
     const weekStyle = {
         backgroundImage: `linear-gradient(to right, #f90 0%, #f90 ${weekProcess}%, white 0, white 100%)`
     };

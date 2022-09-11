@@ -6,13 +6,13 @@ import {
     useNavigate,
     useLocation,
 } from 'react-router-dom';
-import { useAuth } from "hooks/customhooks";
+import { useAuth, useLocalStorage } from "hooks/customhooks";
 const fakeAuth = (username) =>
     new Promise((resolve) => {
         setTimeout(() => resolve(username), 250);
     });
 const AuthProvider = ({ children }) => {
-    const [token, setToken] = React.useState(null);
+    const [token, setToken] = useLocalStorage('logininguser', null);
     const navigate = useNavigate();
     const location = useLocation();
     const handleLogin = async (username) => {
