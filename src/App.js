@@ -20,7 +20,7 @@ function App() {
       <Navigation />
       <Header />
       <Routes>
-        <Route index element={<Login />} />
+        <Route index element={<Dashboard />} />
         <Route path="login" element={<Login />} />
         <Route element={<ProtectedRoute />}>
           <Route path="dashboard" element={<Dashboard />} />

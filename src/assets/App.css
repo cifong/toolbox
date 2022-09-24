@@ -35,8 +35,8 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: auto 90%;
-  height: 10vh;
-  width: 10vh;
+  height: 10vmin;
+  width: 10vmin;
   transition: all 700ms;
 }
 
@@ -80,10 +80,12 @@
 .habit-wrapper {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
-  grid-gap: 10px;
+  grid-gap: 1vmin;
   grid-auto-rows: calc(100vw / 8);
   width: 100%;
+  font-size: calc(100vw / 24);
 }
+
 .habit-item-title {
   background-color: bisque;
   position: relative;
@@ -92,6 +94,7 @@
   justify-content: center;
   align-items: center;
 }
+
 .habit-item-title-detail {
   position: absolute;
   top: 0;
@@ -99,26 +102,64 @@
   width: 100%;
   height: 100%;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   visibility: hidden;
   opacity: 0;
   transition: visibility 0s, opacity 0.3s linear;
 }
+
 .habit-item-title-detail.active {
   width: 100vw;
   background-color: black;
-  color:aliceblue;
+  color: aliceblue;
   visibility: visible;
   opacity: 1;
 }
+
 .habit-item-section {
   color: rgb(61, 116, 64);
   text-align: center;
 }
+
 .habit-checkbox {
   width: 100%;
   height: 100%;
 }
 
+.habit-function-wrapper {
+  display: flex;
+  gap: 1vmin;
+  align-items: flex-end;
+  margin-right: 2vmin;
+}
+
+.habit-btn {
+  height: 60%;
+  aspect-ratio: 1 / 1;
+}
+
+.edit-btn {
+  background-image: url('./edit.svg');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.delete-btn {
+  background-image: url('./delete.svg');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.habit-name-wrapper {
+  flex: 1 1;
+  min-width: 0;
+  padding: 0px 4vmin;
+}
+
+.habit-name-span {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+}
