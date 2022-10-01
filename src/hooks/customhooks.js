@@ -3,7 +3,7 @@ import { AuthContext } from "context/authContext";
 const useAuth = () => {
     return React.useContext(AuthContext);
 };
-const useLocalStorage = (storageKey, initialValue) => {
+const useStorage = (storageKey, initialValue) => {
     const [value, setValue] = React.useState(
         () => JSON.parse(localStorage.getItem(storageKey)) || initialValue
     );
@@ -17,4 +17,4 @@ const useLocalStorage = (storageKey, initialValue) => {
     }, [value, storageKey]);
     return [value, setValue];
 }
-export { useAuth, useLocalStorage };
+export { useAuth, useStorage };

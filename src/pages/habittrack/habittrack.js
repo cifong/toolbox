@@ -1,12 +1,16 @@
 import React from "react";
-import { useLocalStorage } from "hooks/customhooks";
+import { useStorage, useAuth} from "hooks/customhooks";
 import { createWeekend } from "utils/common";
 function CheckBox(props) {
     const handleCheckChange = (e) => {
         const [index, day] = e.target.id.split('-');
         const value = e.target.checked;
         props.handleHabitList((preState) => {
-            preState[index].list[day] = value;
+            if(value) {
+                preState[index].list |= (1 << day);
+            } else if((preState[index].list >> day) & 1) {
+                preState[index].list ^= (1 << day);
+            }
             return [...preState];
         });
     };
@@ -14,7 +18,6 @@ function CheckBox(props) {
         <input
             type="checkbox"
             className="habit-checkbox"
-            name={`${props.id}`}
             id={`${props.id}`}
             checked={props.checked}
             onChange={handleCheckChange}
@@ -82,32 +85,38 @@ function HabitItemName(props) {
 }
 function HabitItmeContent(props) {
     const inputRef = React.useRef(null);
+    const editRef = React.useRef(null);
     React.useEffect(() => {
         if (props.editMode)
             inputRef.current.focus();
     });
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        editRef.current.click();
+    };
     return <>
         <div className="habit-name-wrapper">
             {props.editMode
-                ? <input type="text" value={props.habitName} onChange={props.handleHabitName}  data-act="input" ref={inputRef} />
+                ? <form onSubmit={handleSubmit}><input type="text" value={props.habitName} onChange={props.handleHabitName}  data-act="input" ref={inputRef} /></form>
                 : <span className="habit-name-span">{props.habitName}</span>
             }
 
         </div>
         <div className="habit-function-wrapper">
-            <button className="edit-btn habit-btn" data-act="toggleEditMode"></button>
+            <button className="edit-btn habit-btn" data-act="toggleEditMode" ref={editRef}></button>
             <button className="delete-btn habit-btn" data-act="deleteItem"></button>
         </div>
     </>
 }
 export default function HabitTrack() {
-    const [habitlist, setHabitList] = useLocalStorage('habitlist', []);
+    const { token } = useAuth();
+    const [habitlist, setHabitList] = useStorage(`habitlist${token}`, []);
     const addHabitListItem = (name) => {
         if (!name.length) return;
         setHabitList((preState) => preState.concat(
             {
                 name: name,
-                list: new Array(7).fill(false),
+                list: 0,
                 id: new Date().getTime()
             })
         );
@@ -122,12 +131,23 @@ export default function HabitTrack() {
     const habitlistelement = habitlist.map((habit, index) => {
         const res = [];
         res.push(<HabitItemName key={`name-${habit.id}`} habitIndex={index} habitname={habit.name} handleHabitList={setHabitList} />);
-        for (let i = 0; i < habit.list.length; i++) {
+        for (let i = 0; i < 7; i++) {
             const id = `${index}-${i}`;
-            res.push(<CheckBox key={`list-${habit.id}-${id}`} id={id} checked={habit.list[i]} handleHabitList={setHabitList} />);
+            const mask = 1 << i;
+            res.push(<CheckBox key={`list-${habit.id}-${id}`} id={id} checked={habit.list & mask} handleHabitList={setHabitList} />);
         }
         return res;
     });
+    const handleSettleAccounts = () => {
+        setHabitList(preState => {
+            return preState.map(info => {
+                return {
+                    ...info,
+                    list: 0
+                }
+            });
+        });
+    };
     const datatime = createWeekend();
     const weektitle = datatime.map((v, i) => <WeekTitle key={`day-${i}`} data={v} />);
     return (
@@ -149,6 +169,9 @@ export default function HabitTrack() {
                 <div></div>
                 {weektitle}
                 {habitlistelement}
+            </div>
+            <div>
+                <button onClick={handleSettleAccounts}>settle accounts</button>
             </div>
         </div>
     );

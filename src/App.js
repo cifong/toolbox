@@ -10,7 +10,6 @@ import Dashboard from 'pages/dashboard/dashboard';
 import HabitTrack from "pages/habittrack/habittrack";
 import Meals from "pages/meals/meals";
 import Worksignin from "pages/worksignin/worksignin";
-import Todolist from "pages/todolist/todolist";
 import Settings from "pages/settings/settings";
 import { AuthProvider, ProtectedRoute } from "components/authContextProvider";
 import Navigation from "components/navigation";
@@ -20,14 +19,13 @@ function App() {
       <Navigation />
       <Header />
       <Routes>
-        <Route index element={<Dashboard />} />
+        <Route index element={<Login />} />
         <Route path="login" element={<Login />} />
         <Route element={<ProtectedRoute />}>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="habittrack" element={<HabitTrack />} />
           <Route path="meals" element={<Meals />} />
           <Route path="worksignin" element={<Worksignin />} />
-          <Route path="todolist" element={<Todolist />} />
           <Route path="settings" element={<Settings />} />
         </Route>
         <Route path="*" element={<span>There's nothing here: 404!</span>} />
