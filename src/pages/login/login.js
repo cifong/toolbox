@@ -1,9 +1,18 @@
 import React from "react";
 import { useAuth } from "hooks/customhooks";
+import {
+    Navigate,
+    useLocation
+} from 'react-router-dom';
 export default function Login() {
-    const { onLogin } = useAuth();
+    const { token, onLogin } = useAuth();
+    const location = useLocation();
     const [username, setusername] = React.useState("");
     const [password, setpassword] = React.useState("");
+    
+    if (token) {
+        return <Navigate to={"/dashboard"} replace state={{ from: location }} />;
+    }
     const testpassword = 'qqqqqq';
     const handleSubmit = (e) => {
         e.preventDefault();
