@@ -34,6 +34,10 @@ export default function Navigation() {
                     className={({ isActive }) => `navbar-item ${isActive && 'active'}`}
                     onClick={togglenav}
                 >workSignIn</NavLink>
+                <NavLink to="/workouttimer" 
+                    className={({ isActive }) => `navbar-item ${isActive && 'active'}`}
+                    onClick={togglenav}
+                >workoutTimer</NavLink>
                 <NavLink to="/settings" 
                     className={({ isActive }) => `navbar-item ${isActive && 'active'}`}
                     onClick={togglenav}
