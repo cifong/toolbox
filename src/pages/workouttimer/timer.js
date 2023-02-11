@@ -39,7 +39,7 @@ function Countdown(props) {
                         ...props.data[newState.dataidx].list[newState.listidx]
                     };
                 }
-                if (props.data[newState.dataidx].rounds > ++newState.rountCount) {
+                if (props.data[newState.dataidx].rounds > newState.rountCount++) {
                     return {
                         ...newState,
                         ...props.data[newState.dataidx].list[0],
