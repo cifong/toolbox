@@ -1,4 +1,5 @@
 import React from "react";
+import Weather from "components/weather";
 export default function Dashboard() {
     const [timestamp, setTimestamp] = React.useState(new Date().getTime());
     const now = new Date(timestamp);
@@ -32,7 +33,7 @@ export default function Dashboard() {
             setTimestamp(new Date().getTime());
         }, 60000);
         return () => clearTimeout(timeid);
-    }, [timestamp])
+    }, [timestamp]);
     return (
         <div className="container">
             <p> Dashboard: {now.toLocaleDateString()}</p>
@@ -44,6 +45,7 @@ export default function Dashboard() {
             <div className="time-process" style={weekStyle}>{weekProcess}%</div>
             <p>The Day Percent:</p>
             <div className="time-process" style={dayStyle}>{dayProcess}%</div>
+            <Weather/>
         </div>
     );
 };
