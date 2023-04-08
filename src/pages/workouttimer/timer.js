@@ -59,7 +59,6 @@ function Countdown(props) {
         }
         return () => clearInterval(timerID);
     }, [countdownInfo.playStatus, props.data, initCountdownInfo]);
-    console.log(countdownInfo, 'render!')
     const style = {
         backgroundColor: props.data[countdownInfo.dataidx].list[countdownInfo.listidx].bgcolor
     };

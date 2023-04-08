@@ -49,7 +49,6 @@ function AddArea(props) {
                 ...preState[props.day]
             };
             res[props.day].expendDetail = [...res[props.day].expendDetail, cost];
-            console.log(res[props.day], preState[props.day])
             return res;
         });
     };
