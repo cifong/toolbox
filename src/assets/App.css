@@ -328,3 +328,16 @@ button:active {
 button:active:after {
   height: 4px;
 }
+
+.curWeather {
+  display: flex;
+  justify-content: space-around;
+}
+
+.dailyWeather {
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
+  border-top:2px solid #2980b9;
+  border-bottom: 2px solid #439edb ;
+}
