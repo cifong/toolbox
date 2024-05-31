@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/toolbox/static/css/main.635bbcac.css",
-    "main.js": "/toolbox/static/js/main.5d05ba84.js",
-    "static/js/787.ac02177c.chunk.js": "/toolbox/static/js/787.ac02177c.chunk.js",
+    "main.css": "/toolbox/static/css/main.5a95a5c2.css",
+    "main.js": "/toolbox/static/js/main.a43d000f.js",
+    "static/js/453.e1589031.chunk.js": "/toolbox/static/js/453.e1589031.chunk.js",
     "static/media/logo.svg": "/toolbox/static/media/logo.6ce24c58023cc2f8fd88.svg",
-    "static/media/edit.svg": "/toolbox/static/media/edit.003c90cd7ff28f66a3b0.svg",
-    "static/media/delete.svg": "/toolbox/static/media/delete.8860742bc29bfeb44e0f.svg",
+    "static/media/edit.svg": "/toolbox/static/media/edit.f85e33352c425fc0a5e0.svg",
+    "static/media/delete.svg": "/toolbox/static/media/delete.23284c99173b25c13dd7.svg",
     "index.html": "/toolbox/index.html",
-    "main.635bbcac.css.map": "/toolbox/static/css/main.635bbcac.css.map",
-    "main.5d05ba84.js.map": "/toolbox/static/js/main.5d05ba84.js.map",
-    "787.ac02177c.chunk.js.map": "/toolbox/static/js/787.ac02177c.chunk.js.map"
+    "main.5a95a5c2.css.map": "/toolbox/static/css/main.5a95a5c2.css.map",
+    "main.a43d000f.js.map": "/toolbox/static/js/main.a43d000f.js.map",
+    "453.e1589031.chunk.js.map": "/toolbox/static/js/453.e1589031.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.635bbcac.css",
-    "static/js/main.5d05ba84.js"
+    "static/css/main.5a95a5c2.css",
+    "static/js/main.a43d000f.js"
   ]
 }
