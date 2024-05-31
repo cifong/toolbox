@@ -23,9 +23,13 @@ function WorkTimeInfo(props) {
         return punchoutTime;
     };
     const punchoutTime = getPunchOutTime();
+    const curtime = new Date();
+    const isTime = curtime >= punchoutTime;
     return <>
         <div>punchIn: {new Date(punchInTime).toLocaleString()}</div>
         <div>punchOut: {punchoutTime.toLocaleString()}</div>
+        <div>curtime: {curtime.toLocaleString()}</div>
+        <div>isTime: {isTime ? 'yes' : 'no'}</div>
     </>
 }
 export default function Worksignin() {
