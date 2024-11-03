@@ -6,21 +6,23 @@ function WorkTimeInfo(props) {
     if (!punchInTime) {
         return <></>;
     }
-    const totalWorkMinutes = workingHours * 60 + workingMinutes * 1 - dayOffHours * 60 - dayOffMinutes * 1;
+    const totalWorkMinutes = (workingHours - dayOffHours) * 60 + (workingMinutes - dayOffMinutes) * 1;
     const totalLunchBreakMinutes = lunchBreakHours * 60 + lunchBreakMinutes * 1;
     const getPunchOutTime = () => {
         const lunchBreakStart = new Date();
         lunchBreakStart.setHours(12, 0, 0);
-        const punchoutTime = new Date(punchInTime);
-        punchoutTime.setMinutes(punchoutTime.getMinutes() + totalWorkMinutes);
-        if (totalWorkMinutes > 0 && punchoutTime >= lunchBreakStart) {
-            punchoutTime.setMinutes(punchoutTime.getMinutes() + totalLunchBreakMinutes);
-            return punchoutTime;
-        }
         const lunchBreakEnd = new Date(lunchBreakStart);
         lunchBreakEnd.setMinutes(lunchBreakEnd.getMinutes() + totalLunchBreakMinutes);
-        punchoutTime.setTime(Math.max(lunchBreakEnd, punchoutTime))
+        const punchoutTime = new Date(punchInTime);
+        if (punchoutTime >= lunchBreakStart) {
+            punchoutTime.setTime(Math.max(lunchBreakEnd, punchoutTime) + totalWorkMinutes);
+            return punchoutTime;
+        }
         punchoutTime.setMinutes(punchoutTime.getMinutes() + totalWorkMinutes);
+        if (punchoutTime < lunchBreakStart) {
+            return punchoutTime;
+        }
+        punchoutTime.setMinutes(punchoutTime.getMinutes() + totalLunchBreakMinutes);
         return punchoutTime;
     };
     const punchoutTime = getPunchOutTime();
