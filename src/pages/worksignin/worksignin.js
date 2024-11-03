@@ -9,7 +9,7 @@ function WorkTimeInfo(props) {
     const totalWorkMinutes = (workingHours - dayOffHours) * 60 + (workingMinutes - dayOffMinutes) * 1;
     const totalLunchBreakMinutes = lunchBreakHours * 60 + lunchBreakMinutes * 1;
     const getPunchOutTime = () => {
-        const lunchBreakStart = new Date();
+        const lunchBreakStart = new Date(punchInTime);
         lunchBreakStart.setHours(12, 0, 0);
         const lunchBreakEnd = new Date(lunchBreakStart);
         lunchBreakEnd.setMinutes(lunchBreakEnd.getMinutes() + totalLunchBreakMinutes);
