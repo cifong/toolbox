@@ -7,7 +7,7 @@
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
 	// 啟動後要執行的指令 (例如安裝依賴)
-	"postCreateCommand": "npm install",
+	"postCreateCommand": "pnpm install",
 	// 轉發 React 專案預設的 port (通常是 3000)
 	"forwardPorts": [
 		3000
