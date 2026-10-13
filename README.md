@@ -1,70 +1,56 @@
-# Getting Started with Create React App
+# Toolbox
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+以 React 建置的個人日常工具網站，包含儀表板、習慣追蹤、餐費紀錄、上下班時間計算與運動計時器。應用程式使用 Create React App 建置，並以 HashRouter 管理前端路由。
 
-## Available Scripts
+## 環境需求
 
-In the project directory, you can run:
+- Node.js 24.14.0、npm 11.9.0 為目前盤點到的本機版本；尚未確認這是否為專案唯一支援的版本組合。
+- 依賴版本由 `package-lock.json` 鎖定。安裝時建議使用 `npm ci`。
 
-### `npm start`
+## 安裝與啟動
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```bash
+npm ci
+npm start
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+開發伺服器預設網址為 <http://localhost:3000>。CRA 會在程式碼變更時重新載入；CRA 的 ESLint 問題也可能顯示於開發輸出。
 
-### `npm test`
+## 可用指令
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+| 指令 | 用途 |
+| --- | --- |
+| `npm start` | 啟動開發伺服器 |
+| `npm test` | 啟動 CRA/Jest 互動式測試；預設進入 watch 模式 |
+| `npm run build` | 建置正式版至 `build/` |
+| `npm run deploy` | 先執行 `predeploy` 建置，再使用 `gh-pages -d build` 發布 |
+| `npm run eject` | 將 CRA 設定複製至專案；此操作不可逆，請勿在一般開發流程中執行 |
 
-### `npm run build`
+目前只有 `src/App.test.js` 一個測試檔；該測試仍是 CRA 初始範例，與目前頁面及路由設定不一致。測試結果尚未確認。
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 部署
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+`package.json` 設定 `homepage` 為 <https://cifong.github.io/toolbox>，`predeploy` 建置 `build/`，`deploy` 使用 `gh-pages` 發布。部署指令會更新遠端 GitHub Pages 內容；執行前請先確認變更與目標 repository。GitHub Pages repository 設定及目前線上發布狀態尚未確認。
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+應用程式使用 `HashRouter`，路由網址包含 `#`。這是目前程式碼的設定，不代表已驗證線上部署成功。
 
-### `npm run eject`
+## 專案文件
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- [專案架構](docs/PROJECT_OVERVIEW.md)
+- [開發環境與指令](docs/DEVELOPMENT.md)
+- [Git 工作流程](docs/GIT_WORKFLOW.md)
+- [Codex 專案規範](AGENTS.md)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Create React App 參考資料
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+本專案由 Create React App 建立。以下保留原 README 的主要參考資料：
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- [Create React App 入門](https://facebook.github.io/create-react-app/docs/getting-started)
+- [執行測試](https://facebook.github.io/create-react-app/docs/running-tests)
+- [部署](https://facebook.github.io/create-react-app/docs/deployment)
+- [程式碼分割](https://facebook.github.io/create-react-app/docs/code-splitting)
+- [分析 bundle 大小](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- [Progressive Web App](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- [進階設定](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- [建置壓縮問題排查](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- [React 文件](https://react.dev/)
