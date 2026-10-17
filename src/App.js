@@ -18,22 +18,26 @@ import Navigation from "components/navigation";
 function App() {
   return (
     <AuthProvider>
-      <Navigation />
-      <Header />
-      <Routes>
-        <Route index element={<Login />} />
-        <Route path="login" element={<Login />} />
-        <Route element={<ProtectedRoute />}>
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="habittrack" element={<HabitTrack />} />
-          <Route path="meals" element={<Meals />} />
-          <Route path="worksignin" element={<Worksignin />} />
-          <Route path="workouttimer" element={<WorkoutTimerIndex />} />
-          <Route path="workouttimer/:tid" element={<WorkoutTimer />} />
-          <Route path="settings" element={<Settings />} />
-        </Route>
-        <Route path="*" element={<span>There's nothing here: 404!</span>} />
-      </Routes>
+      <div className="app-shell">
+        <Navigation />
+        <Header />
+        <main className="main-content">
+          <Routes>
+            <Route index element={<Login />} />
+            <Route path="login" element={<Login />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="habittrack" element={<HabitTrack />} />
+              <Route path="meals" element={<Meals />} />
+              <Route path="worksignin" element={<Worksignin />} />
+              <Route path="workouttimer" element={<WorkoutTimerIndex />} />
+              <Route path="workouttimer/:tid" element={<WorkoutTimer />} />
+              <Route path="settings" element={<Settings />} />
+            </Route>
+            <Route path="*" element={<span>There's nothing here: 404!</span>} />
+          </Routes>
+        </main>
+      </div>
     </AuthProvider>
   );
 }

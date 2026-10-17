@@ -69,22 +69,22 @@ export default function Worksignin() {
             <p> worksignin </p>
             <button onClick={handleSign}>Sign In</button>
 
-            <div className="flex-row-center">
-                <span>work:</span>
+            <div className="work-config-row">
+                <span className="work-config-label">work:</span>
                 <input type="number" name="workingHours" min="0" max="12" value={workTime.workingHours} onChange={handleConfig} />
                 <span>hours</span>
                 <input type="number" name="workingMinutes" min="0" max="59" value={workTime.workingMinutes} onChange={handleConfig} />
                 <span>minutes</span>
             </div>
-            <div className="flex-row-center">
-                <span>lunchBreak:</span>
+            <div className="work-config-row">
+                <span className="work-config-label">lunchBreak:</span>
                 <input type="number" name="lunchBreakHours" min="0" max="2" value={workTime.lunchBreakHours} onChange={handleConfig} />
                 <span>hours</span>
                 <input type="number" name="lunchBreakMinutes" min="0" max="59" value={workTime.lunchBreakMinutes} onChange={handleConfig} />
                 <span>minutes</span>
             </div>
-            <div className="flex-row-center">
-                <span>DayOff:</span>
+            <div className="work-config-row">
+                <span className="work-config-label">DayOff:</span>
                 <input type="number" name="dayOffHours" min="0" max="8" value={workTime.dayOffHours} onChange={handleConfig} />
                 <span>hours</span>
                 <input type="number" name="dayOffMinutes" min="0" max="59" value={workTime.dayOffMinutes} onChange={handleConfig} />

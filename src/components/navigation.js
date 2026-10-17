@@ -1,49 +1,77 @@
 import React from "react";
-import {
-    NavLink,
-} from 'react-router-dom';
+import { NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "hooks/customhooks";
+
+const navigationItems = [
+    { to: "/dashboard", label: "Dashboard" },
+    { to: "/habittrack", label: "Habit Track" },
+    { to: "/meals", label: "Meals" },
+    { to: "/worksignin", label: "Work Sign In" },
+    { to: "/workouttimer", label: "Workout Timer" },
+    { to: "/settings", label: "Settings" }
+];
+
+function getCurrentPage(pathname) {
+    const currentItem = navigationItems.find(({ to }) => {
+        return pathname.toLowerCase() === to.toLowerCase()
+            || pathname.toLowerCase().startsWith(`${to.toLowerCase()}/`);
+    });
+    return currentItem ? currentItem.label : "Dashboard";
+}
+
 export default function Navigation() {
     const { token, onLogout } = useAuth();
-    const brandRef = React.useRef(null);
-    const menuRef = React.useRef(null);
+    const location = useLocation();
+    const [isOpen, setIsOpen] = React.useState(false);
+
+    React.useEffect(() => {
+        setIsOpen(false);
+    }, [location.pathname]);
+
     if (!token) {
-        return (<></>);
+        return null;
     }
-    const togglenav = () => {
-        brandRef.current.classList.toggle('active');
-        menuRef.current.classList.toggle('active');
-    };
+
     return (
-        <nav className="navbar">
-            <div className={`navbar-brand`} ref={brandRef} onClick={togglenav}></div>
-            <div className={`navbar-menu`} ref={menuRef}>
-                <NavLink to="/dashboard" 
-                    className={({ isActive }) => `navbar-item ${isActive && 'active'}`}
-                    onClick={togglenav}
-                >Dashboard</NavLink>
-                <NavLink to="/habitTrack" 
-                    className={({ isActive }) => `navbar-item ${isActive && 'active'}`}
-                    onClick={togglenav}
-                >habitTrack</NavLink>
-                <NavLink to="/meals" 
-                    className={({ isActive }) => `navbar-item ${isActive && 'active'}`}
-                    onClick={togglenav}
-                >meals</NavLink>
-                <NavLink to="/worksignin" 
-                    className={({ isActive }) => `navbar-item ${isActive && 'active'}`}
-                    onClick={togglenav}
-                >workSignIn</NavLink>
-                <NavLink to="/workouttimer" 
-                    className={({ isActive }) => `navbar-item ${isActive && 'active'}`}
-                    onClick={togglenav}
-                >workoutTimer</NavLink>
-                <NavLink to="/settings" 
-                    className={({ isActive }) => `navbar-item ${isActive && 'active'}`}
-                    onClick={togglenav}
-                >settings</NavLink>
-                <button type="button" onClick={onLogout}>Sign Out</button>
+        <nav className="navbar" aria-label="Primary navigation">
+            <button
+                type="button"
+                className="navbar-toggle"
+                aria-expanded={isOpen}
+                aria-controls="primary-navigation"
+                onClick={() => setIsOpen(open => !open)}
+            >
+                <span className="navbar-logo" aria-hidden="true" />
+                <span>Menu</span>
+                <span className="navbar-current-page">{getCurrentPage(location.pathname)}</span>
+                <span className="navbar-chevron" aria-hidden="true">{isOpen ? "▴" : "▾"}</span>
+            </button>
+            <div
+                className={`navbar-menu${isOpen ? " is-open" : ""}`}
+                id="primary-navigation"
+                hidden={!isOpen}
+            >
+                {navigationItems.map(({ to, label }) => (
+                    <NavLink
+                        key={to}
+                        to={to}
+                        className={({ isActive }) => `navbar-item${isActive ? " active" : ""}`}
+                        onClick={() => setIsOpen(false)}
+                    >
+                        {label}
+                    </NavLink>
+                ))}
+                <button
+                    type="button"
+                    className="navbar-logout"
+                    onClick={() => {
+                        setIsOpen(false);
+                        onLogout();
+                    }}
+                >
+                    Sign Out
+                </button>
             </div>
         </nav>
     );
-};
+}

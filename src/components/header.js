@@ -4,7 +4,7 @@ export default function Header() {
     const { token } = useAuth();
     return (
         <header className="header">
-            {token && `Welcome!${token}`}
+            {token && <div className="header-inner">Welcome! {token}</div>}
         </header>
     );
 }

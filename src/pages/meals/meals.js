@@ -13,27 +13,35 @@ function CheckBox(props) {
     const handleCheckChange = (e) => {
         const checked = e.target.checked;
         props.handleMeals((preState) => {
-            preState[props.day].status = checked;
-            return [...preState];
+            return preState.map((meal, index) => index === props.day
+                ? { ...meal, status: checked }
+                : meal);
         });
     };
-    return <div className="habit-item-section">
+    return <label className="meal-field meal-status-field">
+        <span className="meal-field-label">Spent?</span>
         <input
             type="checkbox"
             className="habit-checkbox"
             checked={props.checked}
             onChange={handleCheckChange}
+            aria-label={`Mark ${props.dayLabel} as spent`}
         />
-    </div>;
+    </label>;
 }
 function MoneyDetail(props) {
     const [show, setShow] = React.useState(false);
     const content = !show ? props.data.expendDetail.reduce((a, c) => a + c, 0) : props.data.expendDetail.join(' + ');
-    const handleShow = () => {
-        setShow(preState => !preState);
-    };
-    return <div className="flex-col-center" onClick={handleShow}>
-        {content}
+    return <div className="meal-field">
+        <span className="meal-field-label">Spent</span>
+        <button
+            type="button"
+            className="money-detail-button"
+            onClick={() => setShow(preState => !preState)}
+            aria-expanded={show}
+        >
+            {content}
+        </button>
     </div>;
 }
 function AddArea(props) {
@@ -52,9 +60,10 @@ function AddArea(props) {
             return res;
         });
     };
-    return <div>
+    return <div className="meal-field meal-add-field">
+        <label className="meal-field-label" htmlFor={`meal-amount-${props.day}`}>Add expense</label>
         <form onSubmit={addMeals}>
-            <input type="number" ref={numRef} />
+            <input id={`meal-amount-${props.day}`} type="number" min="0" step="any" ref={numRef} aria-label={`Expense amount for ${props.dayLabel}`} />
             <input type="submit" value={'add'} />
         </form>
     </div>
@@ -95,12 +104,12 @@ function MealInfo(props) {
         });
 
     };
-    return <>
-        <div>balance: <input type="number" value={config.balance} name="balance" onChange={handConfig}/></div>
-        <div>budget: <input type="number" value={config.budget} name="budget" onChange={handConfig}/></div>
-        <div>newWeekBalance: {newWeekBalance}</div>
-        <div><button onClick={handleSettleAccounts}>settle accounts</button></div>
-    </>;
+    return <div className="meal-summary">
+        <label>Balance <input type="number" value={config.balance} name="balance" onChange={handConfig}/></label>
+        <label>Budget <input type="number" value={config.budget} name="budget" onChange={handConfig}/></label>
+        <div>New week balance: {newWeekBalance}</div>
+        <div><button type="button" onClick={handleSettleAccounts}>Settle accounts</button></div>
+    </div>;
 }
 export default function Meals() {
     const { token } = useAuth();
@@ -112,12 +121,18 @@ export default function Meals() {
     }));
     const datatime = createWeekend();
     const mealselement = datatime.map((v, day) => {
-        return [
-            <WeekTitle key={`day${day}`} data={v} />
-            , <CheckBox key={`status${day}`} day={day} checked={meals[day].status} handleMeals={setMeals} />
-            , <MoneyDetail key={`sum${day}`} data={meals[day]} />
-            , <AddArea key={`add${day}`} day={day} handleMeals={setMeals}/>
-        ];
+        const dayLabel = `${v[0]} ${v[1]}`;
+        return (
+            <section className="meal-day" key={`day${day}`} aria-label={dayLabel}>
+                <div className="meal-field meal-date-field">
+                    <span className="meal-field-label">Day</span>
+                    <WeekTitle data={v} />
+                </div>
+                <CheckBox day={day} dayLabel={dayLabel} checked={meals[day].status} handleMeals={setMeals} />
+                <MoneyDetail data={meals[day]} />
+                <AddArea day={day} dayLabel={dayLabel} handleMeals={setMeals}/>
+            </section>
+        );
     });
     return (
         <div className="container">
@@ -125,9 +140,7 @@ export default function Meals() {
             <div className="mealswrapper">
                 {mealselement}
             </div>
-            <div className="info-wrapper">
-                <MealInfo data={meals} handleMeals={setMeals}/>
-            </div>
+            <MealInfo data={meals} handleMeals={setMeals}/>
         </div>
     );
 };

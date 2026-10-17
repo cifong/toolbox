@@ -9,107 +9,198 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.header {
-  width: 100vw;
-  height: 12vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 2rem;
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  min-width: 320px;
+}
+
+button,
+input {
+  max-width: 100%;
+}
+
+.app-shell {
+  width: min(100%, 1120px);
+  min-width: 0;
+  margin: 0 auto;
+  padding: 12px clamp(12px, 3vw, 28px) 32px;
 }
 
 .navbar {
-  position: fixed;
+  position: relative;
+  z-index: 5;
+  width: 100%;
   background-color: #d9f0f7;
-  z-index: 1;
+  border-radius: 8px;
 }
 
-.navbar-brand {
-  background-image: url('./logo.svg');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: auto 90%;
-  height: 10vmin;
-  width: 10vmin;
-  transition: all 700ms;
+.navbar-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 48px;
+  margin: 0;
+  padding: 8px 12px;
+  color: #153541;
+  background-color: transparent;
+  border-radius: 8px;
+  text-align: left;
 }
 
-.navbar-brand.active {
-  width: 100vw;
-  transform: rotate(2turn);
-}
-
-.navbar-menu {
+.navbar-toggle::after,
+.navbar-toggle:active::after {
   display: none;
 }
 
-.navbar-menu.active {
+.navbar-toggle:hover {
+  background-color: #c7e7f0;
+}
+
+.navbar-logo {
+  flex: 0 0 28px;
+  width: 28px;
+  height: 28px;
+  background-image: url('./logo.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.navbar-current-page {
+  flex: 1;
+  min-width: 0;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.navbar-chevron {
+  color: #315b69;
+}
+
+.navbar-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  width: min(100%, 320px);
+  padding: 8px;
+  background-color: #fff;
+  border: 1px solid #d1e2e7;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgb(15 45 55 / 18%);
+}
+
+.navbar-menu[hidden] {
+  display: none;
 }
 
 .navbar-item {
-  padding: 1.5rem 1rem;
-  font-size: 1rem;
+  display: block;
+  padding: 12px 14px;
+  color: #153541;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.navbar-item:hover,
+.navbar-item.active {
+  background-color: #e7f5f8;
+}
+
+.navbar-logout {
+  align-self: flex-start;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 64px;
+  padding: 12px 0;
+  font-size: clamp(1.25rem, 4vw, 2rem);
+  overflow-wrap: anywhere;
+}
+
+.header-inner,
+.main-content {
+  width: 100%;
+  min-width: 0;
 }
 
 .container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  gap: 1vh;
+  width: 100%;
+  min-width: 0;
+  gap: 12px;
+  text-align: center;
+}
+
+.container > * {
+  max-width: 100%;
 }
 
 .time-process {
-  height: 5vmin;
-  width: 50vw;
-  line-height: 5vmin;
+  width: min(100%, 560px);
+  min-height: 40px;
+  padding: 8px;
+  line-height: 22px;
   text-align: center;
   border: #1a73e8 1px solid;
 }
 
 .habit-wrapper {
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  grid-gap: 1vmin;
-  grid-auto-rows: calc(100vw / 8);
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  grid-auto-rows: minmax(40px, 1fr);
+  gap: 4px;
   width: 100%;
-  font-size: calc(100vw / 24);
+  min-width: 0;
+  font-size: clamp(10px, calc(100vw / 24), 16px);
 }
 
 .habit-item-title {
-  background-color: bisque;
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  min-width: 0;
+  background-color: bisque;
 }
 
 .habit-item-title-detail {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  z-index: 2;
   display: flex;
+  align-items: center;
+  width: min(80vw, 600px);
+  min-height: 100%;
   visibility: hidden;
   opacity: 0;
   transition: visibility 0s, opacity 0.3s linear;
 }
 
 .habit-item-title-detail.active {
-  width: 100vw;
-  background-color: black;
+  background-color: #111;
   color: aliceblue;
   visibility: visible;
   opacity: 1;
 }
 
 .habit-item-section {
+  min-width: 0;
   color: rgb(61, 116, 64);
   text-align: center;
 }
@@ -121,13 +212,15 @@
 
 .habit-function-wrapper {
   display: flex;
-  gap: 1vmin;
-  align-items: flex-end;
-  margin-right: 2vmin;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 4px;
+  margin-right: 6px;
 }
 
 .habit-btn {
-  height: 60%;
+  width: 36px;
+  height: 36px;
   aspect-ratio: 1 / 1;
 }
 
@@ -144,27 +237,129 @@
 }
 
 .habit-name-wrapper {
-  flex: 1 1;
+  flex: 1 1 auto;
   min-width: 0;
-  padding: 0px 4vmin;
+  padding: 0 8px;
+}
+
+.habit-name-wrapper input {
+  width: 100%;
 }
 
 .habit-name-span {
   display: -webkit-box;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  text-overflow: ellipsis;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-wrap: break-word;
 }
 
 .mealswrapper {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr) repeat(2, 3fr);
-  grid-gap: 1vmin;
-  grid-auto-rows: calc(100vw / 8);
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  font-size: calc(100vw / 24);
+  min-width: 0;
+  text-align: left;
+}
+
+.meal-day {
+  display: grid;
+  grid-template-columns: minmax(90px, 1fr) minmax(90px, 0.8fr) minmax(100px, 1fr) minmax(180px, 2fr);
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+  padding: 10px 8px;
+  border-bottom: 1px solid #dbe4e8;
+}
+
+.meal-field {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  min-width: 0;
+  gap: 4px;
+}
+
+.meal-field-label {
+  color: #52636a;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.meal-date-field .habit-item-section {
+  display: flex;
+  gap: 6px;
+  text-align: left;
+}
+
+.meal-status-field {
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 8px;
+}
+
+.meal-status-field .habit-checkbox {
+  width: 20px;
+  height: 20px;
+}
+
+.money-detail-button {
+  margin: 0;
+  padding: 4px 8px;
+  color: #183944;
+  background: transparent;
+  border: 1px solid #bdcdd2;
+  border-radius: 4px;
+}
+
+.money-detail-button::after,
+.money-detail-button:active::after {
+  display: none;
+}
+
+.meal-add-field form {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+}
+
+.meal-add-field input[type="number"] {
+  width: min(100%, 150px);
+  min-width: 0;
+  padding: 6px;
+}
+
+.meal-add-field input[type="submit"] {
+  min-height: 34px;
+  padding: 4px 10px;
+}
+
+.meal-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin-top: 12px;
+  text-align: left;
+}
+
+.meal-summary label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.meal-summary input {
+  width: min(100%, 140px);
+  min-width: 0;
+  padding: 6px;
 }
 
 .flex-col-center {
@@ -180,34 +375,26 @@
   align-items: center;
 }
 
-.info-wrapper {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-gap: 1vmin;
-  grid-auto-rows: calc(100vw / 8);
-}
-
 .contentWrapper {
-  width: 100vw;
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  min-width: 0;
 }
 
 .login-container {
+  width: min(100%, 600px);
+  min-width: 0;
+  padding: clamp(24px, 7vw, 50px) clamp(18px, 5vw, 30px);
   background-color: hsla(201, 100%, 6%, 0.6);
-  padding: 50px 30px;
-  min-width: 400px;
-  width: 50%;
-  max-width: 600px;
 }
 
 .login-title {
+  margin-bottom: 32px;
   color: white;
   text-align: center;
-  margin: 0;
-  margin-bottom: 40px;
-  font-size: 2.5em;
+  font-size: clamp(1.8rem, 8vw, 2.5rem);
   font-weight: normal;
 }
 
@@ -218,21 +405,23 @@
 }
 
 .input-group label {
-  color: white;
-  font-weight: lighter;
-  font-size: 1.5em;
   margin-bottom: 7px;
+  color: white;
+  font-size: 1.25rem;
+  font-weight: lighter;
 }
 
 .input-group input {
-  font-size: 1.5em;
-  font-weight: lighter;
-  padding: .1em .25em;
+  width: 100%;
+  min-width: 0;
+  padding: 4px 8px;
+  color: white;
   background-color: hsla(201, 100%, 91%, 0.3);
   border: 1px solid hsl(201, 100%, 6%);
-  outline: none;
   border-radius: 5px;
-  color: white;
+  outline: none;
+  font-size: 1.2rem;
+  font-weight: lighter;
 }
 
 .input-group input:focus {
@@ -240,21 +429,17 @@
 }
 
 .login-button {
-  padding: 10px 30px;
   width: 100%;
-  border-radius: 5px;
-  background-color: hsla(201, 100%, 50%, 0.1);
-  order: 1px solid hsl(201, 100%, 50%);
-  outline: none;
-  font-size: 1.5em;
-  font-weight: lighter;
+  margin: 16px 0 0;
+  padding: 10px 20px;
   color: white;
-  margin-top: 20px;
+  background-color: hsla(201, 100%, 50%, 0.25);
+  border: 1px solid hsl(201, 100%, 50%);
+  border-radius: 5px;
+  outline: none;
+  font-size: 1.2rem;
+  font-weight: lighter;
   cursor: pointer;
-}
-
-.login-button:hover {
-  background-color: hsla(201, 100%, 50%, 0.3);
 }
 
 .login-button:hover {
@@ -266,54 +451,61 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 6.9vmax;
-  font-size: 4vmax;
+  min-height: 64px;
+  font-size: clamp(1.2rem, 4vw, 3rem);
+  overflow-wrap: anywhere;
 }
 
 .countdown-wrapper {
-  display:flex;
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
-  line-height: 6.9vmax;
-  font-size: 4vmax;
+  min-height: 40vh;
+  padding: 16px;
+  line-height: 1.4;
+  font-size: clamp(1.2rem, 4vw, 3rem);
+  overflow-wrap: anywhere;
 }
 
 .countdown-btn-wrapper {
   display: flex;
-  gap: 5vw;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
 }
 
 .countdown-btn-wrapper > * {
-  width: 20vw;
+  width: auto;
 }
 
 button {
-  font-family: "Noto Sans", sans-serif;
   position: relative;
-  font-size: 20px;
-  margin: 10px;
-  padding: 5px 10px;
+  max-width: 100%;
+  margin: 8px;
+  padding: 7px 12px;
+  color: #fff;
+  background-color: #3498db;
+  border: none;
   cursor: pointer;
   text-align: center;
   text-decoration: none;
   outline: none;
-  color: #fff;
-  background-color: #3498db;
-  border: none;
+  font-family: "Noto Sans", sans-serif;
+  font-size: 1rem;
   transition: transform 0.15s linear, background-color 0.15s ease;
 }
 
 button::after {
-  content: "";
   position: absolute;
-  background-color: #2980b9;
-  transform: translate3d(0px, 4px, 0px);
   top: calc(100% - 4px);
   left: 0;
   width: 100%;
   height: 8px;
+  background-color: #2980b9;
+  content: "";
+  transform: translate3d(0, 4px, 0);
   transition: height 0.15s linear;
 }
 
@@ -322,22 +514,98 @@ button:hover {
 }
 
 button:active {
-  transform: translate3d(0px, 4px, 0px);
+  transform: translate3d(0, 4px, 0);
 }
 
-button:active:after {
+button:active::after {
   height: 4px;
+}
+
+.weatherWraooer {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  width: 100%;
+  min-width: 0;
+  text-align: left;
+}
+
+.weatherItem {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid #dbe4e8;
+  border-radius: 6px;
+  overflow-wrap: anywhere;
 }
 
 .curWeather {
   display: flex;
-  justify-content: space-around;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
 }
 
 .dailyWeather {
   display: flex;
   flex-direction: column;
-  gap: 2vh;
-  border-top:2px solid #2980b9;
-  border-bottom: 2px solid #439edb ;
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 2px solid #2980b9;
+  border-bottom: 2px solid #439edb;
+}
+
+.dailyWeather > div {
+  overflow-wrap: anywhere;
+}
+
+.work-config-row {
+  display: grid;
+  grid-template-columns: minmax(100px, 1fr) minmax(54px, 72px) auto minmax(54px, 72px) auto;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  max-width: 560px;
+}
+
+.work-config-row input {
+  width: 100%;
+  min-width: 0;
+  padding: 5px;
+}
+
+@media (max-width: 640px) {
+  .meal-day {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 12px;
+    padding: 12px 8px;
+  }
+
+  .meal-date-field,
+  .meal-add-field {
+    grid-column: 1 / -1;
+  }
+
+  .meal-summary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .meal-summary label {
+    justify-content: space-between;
+  }
+
+  .weatherWraooer {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .work-config-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px 10px;
+    text-align: left;
+  }
+
+  .work-config-row .work-config-label {
+    grid-column: 1 / -1;
+    font-weight: 600;
+  }
 }
