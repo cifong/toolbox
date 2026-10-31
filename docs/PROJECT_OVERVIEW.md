@@ -4,20 +4,21 @@
 
 | 項目 | 目前確認內容 |
 | --- | --- |
-| 建置工具 | Create React App，透過 `react-scripts` 5.0.1 |
-| UI | React、React DOM 18.3.1 |
+| 建置工具 | Vite |
+| UI | React、React DOM 19.3.1 |
 | 路由 | React Router DOM 6.30.6，入口使用 `HashRouter` |
 | 樣式 | `src/assets/App.css` |
 | 狀態 | React Context（登入狀態）及 React Hooks；頁面資料使用瀏覽器 `localStorage` |
-| 測試 | CRA/Jest、React Testing Library；目前只有一個尚未更新的範例測試 |
+| 測試 | Vitest、jsdom、React Testing Library；目前只有一個範例測試 |
 | 外部服務 | Dashboard 天氣資料使用 Open-Meteo Forecast API |
 
 版本為目前 lockfile 與安裝目錄確認結果；`package.json` 宣告的是版本範圍。
 
 ## 目錄與入口
 
-- `src/index.js`：取得 `#root`、建立 React root，套用 `React.StrictMode` 與 `HashRouter`，渲染 `App`；呼叫 `reportWebVitals()`，目前未傳入回呼，因此未送出量測資料。
-- `src/App.js`：組合 AuthProvider、導覽、頁首與路由。
+- `index.html`：Vite 的 HTML 入口，載入 `src/index.jsx`。
+- `src/index.jsx`：取得 `#root`、建立 React root，套用 `React.StrictMode` 與 `HashRouter`，渲染 `App`；呼叫 `reportWebVitals()`，目前未傳入回呼，因此未送出量測資料。
+- `src/App.jsx`：組合 AuthProvider、導覽、頁首與路由。
 - `src/pages/`：功能頁面。
 - `src/components/`：共用元件，包括登入 Context provider、導覽、頁首和天氣元件。
 - `src/context/`：建立 AuthContext。
@@ -25,12 +26,12 @@
 - `src/data/`：天氣請求/轉換邏輯與運動計時器靜態資料。
 - `src/utils/`：共用日期工具。
 - `src/assets/`：CSS 與 SVG 圖檔。
-- `public/`：HTML 範本、manifest、圖示與 robots.txt；CRA 將此處資產複製至建置結果。
+- `public/`：manifest、圖示與 robots.txt；Vite 將此處資產複製至建置結果。
 - `package.json`、`package-lock.json`：依賴、scripts 與鎖定版本。
 
 ## 路由
 
-路由由 `src/App.js` 定義，外層 `HashRouter` 位於 `src/index.js`。
+路由由 `src/App.jsx` 定義，外層 `HashRouter` 位於 `src/index.jsx`。
 
 | 路徑 | 頁面 | 存取 |
 | --- | --- | --- |
@@ -73,6 +74,6 @@
 
 ## 品質與部署設定
 
-- ESLint 由 `package.json` 的 `react-app`、`react-app/jest` 設定提供；沒有獨立 lint script 或 Prettier 設定檔。
-- `src/App.test.js` 仍尋找 CRA 範例文字，且直接 render `App`，未提供 Router；實際測試結果尚未確認。
-- GitHub Pages 設定位於 `package.json`：`homepage` 指向 `https://cifong.github.io/toolbox`，`predeploy` 執行 build，`deploy` 使用 `gh-pages -d build`。`HashRouter` 支援以 hash 表示前端路徑。遠端 Pages 設定與部署狀態尚未確認。
+- 沒有獨立 lint script 或 Prettier 設定檔。
+- `src/App.test.jsx` 是單一範例測試，實際測試結果尚未確認。
+- GitHub Pages 設定位於 `package.json` 與 `vite.config.mjs`：`homepage` 指向 `https://cifong.github.io/toolbox`，Vite `base` 為 `/toolbox/`，建置輸出至 `build/`，`deploy` 使用 `gh-pages -d build`。`HashRouter` 支援以 hash 表示前端路徑。遠端 Pages 設定與部署狀態尚未確認。

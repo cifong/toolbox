@@ -2,24 +2,24 @@
 
 ## 專案事實
 
-- 本專案使用 Create React App、`react-scripts`、React 18、React Router DOM 6 與 npm。實際安裝版本以 `package-lock.json` 和安裝環境為準；不要只依賴 `package.json` 的版本範圍。
-- 入口為 `src/index.js`；頁面與路由記錄於 `docs/PROJECT_OVERVIEW.md`。
+- 本專案使用 Vite、React 19、React Router DOM 6 與 npm。實際安裝版本以 `package-lock.json` 和安裝環境為準；不要只依賴 `package.json` 的版本範圍。
+- React 入口為 `src/index.jsx`；HTML 入口為根目錄的 `index.html`。頁面與路由記錄於 `docs/PROJECT_OVERVIEW.md`。
 - 頁面資料透過 `src/hooks/customhooks.js` 的 `useStorage` 存於瀏覽器 `localStorage`。不要假設有伺服器端持久化或安全的登入服務。
 
 ## 修改原則
 
 - 開始前先查看 `git status --short --branch`、相關程式碼與設定，保留使用者現有修改。
 - 僅修改完成需求所需的檔案；不要自行遷移建置工具、升級核心依賴、變更部署設定或新增套件。
-- 路由修改須同步檢查 `src/App.js`、`src/index.js` 及導覽連結。HashRouter 是目前設定。
-- 延續既有 JavaScript、React Hooks 與 CRA ESLint 慣例。狀態更新不可直接修改既有陣列或物件；使用新值更新。
+- 路由修改須同步檢查 `src/App.jsx`、`src/index.jsx` 及導覽連結。HashRouter 是目前設定。
+- 延續既有 JavaScript、React Hooks 慣例。狀態更新不可直接修改既有陣列或物件；使用新值更新。
 - 不要把密碼、token、API key 或其他機密寫入程式碼、文件、提交或日誌。登入目前為前端示範邏輯，不可描述為正式安全驗證。
-- 未經需求要求，不讀取或輸出 `.env` 機密內容。新增環境變數前，先確認 CRA 的 `REACT_APP_` 規則與部署需求；前端環境變數會進入客戶端建置，不適合存放秘密。
+- 未經需求要求，不讀取或輸出 `.env` 機密內容。Vite 只會將 `VITE_` 前綴變數提供給前端程式碼；前端環境變數會進入客戶端建置，不適合存放秘密。
 - 不要臆造 API、路由、測試、工作流程或執行結果；不確定時明確標示尚未確認。
 
 ## 驗證要求
 
 - 依修改內容選擇驗證：`npm test` 執行測試，`npm run build` 驗證正式建置；檢查 lint 輸出與瀏覽器錯誤（如適用）。回報實際執行的指令及結果，不得宣稱未執行的驗證已通過。
-- 測試是 CRA/Jest 與 Testing Library；目前 `src/App.test.js` 為尚未更新的 CRA 範例，和應用路由不一致。修改測試或路由時，先理解此現況再判讀測試結果。
+- 測試使用 Vitest、jsdom 與 Testing Library；目前 `src/App.test.jsx` 是單一範例測試，修改測試或路由時先理解測試內容再判讀結果。
 - 本專案沒有獨立 lint script，也沒有已確認的 Prettier 設定；不要執行不存在的 npm script。
 
 ## Git 安全
