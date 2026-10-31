@@ -36,14 +36,14 @@ export default function Dashboard() {
     }, [timestamp]);
     return (
         <div className="container">
-            <p> Dashboard: {now.toLocaleDateString()}</p>
-            <p>The Years Process</p>
+            <h1 className="page-title">Dashboard</h1>
+            <p>Year Progress</p>
             <div className="time-process" style={yearStyle}>{yearProcess}%</div>
-            <p>The Month Process:</p>
+            <p>Month Progress</p>
             <div className="time-process" style={monthStyle}>{mothProcess}%</div>
-            <p>The Week Process:</p>
+            <p>Week Progress</p>
             <div className="time-process" style={weekStyle}>{weekProcess}%</div>
-            <p>The Day Percent:</p>
+            <p>Today’s Progress</p>
             <div className="time-process" style={dayStyle}>{dayProcess}%</div>
             <Weather/>
         </div>

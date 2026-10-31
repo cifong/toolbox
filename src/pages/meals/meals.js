@@ -19,7 +19,7 @@ function CheckBox(props) {
         });
     };
     return <label className="meal-field meal-status-field">
-        <span className="meal-field-label">Spent?</span>
+        <span className="meal-field-label">Spent today</span>
         <input
             type="checkbox"
             className="habit-checkbox"
@@ -63,8 +63,8 @@ function AddArea(props) {
     return <div className="meal-field meal-add-field">
         <label className="meal-field-label" htmlFor={`meal-amount-${props.day}`}>Add expense</label>
         <form onSubmit={addMeals}>
-            <input id={`meal-amount-${props.day}`} type="number" min="0" step="any" ref={numRef} aria-label={`Expense amount for ${props.dayLabel}`} />
-            <input type="submit" value={'add'} />
+            <input id={`meal-amount-${props.day}`} type="number" min="0" step="any" ref={numRef} aria-label={`Expense amount for ${props.dayLabel}`} placeholder="Amount" />
+            <input type="submit" value="Add" />
         </form>
     </div>
 }
@@ -108,7 +108,7 @@ function MealInfo(props) {
         <label>Balance <input type="number" value={config.balance} name="balance" onChange={handConfig}/></label>
         <label>Budget <input type="number" value={config.budget} name="budget" onChange={handConfig}/></label>
         <div>New week balance: {newWeekBalance}</div>
-        <div><button type="button" onClick={handleSettleAccounts}>Settle accounts</button></div>
+        <div><button type="button" onClick={handleSettleAccounts}>Settle Week</button></div>
     </div>;
 }
 export default function Meals() {
@@ -136,7 +136,7 @@ export default function Meals() {
     });
     return (
         <div className="container">
-            <p> Meals </p>
+            <h1 className="page-title">Meals</h1>
             <div className="mealswrapper">
                 {mealselement}
             </div>

@@ -33,7 +33,7 @@ export default function Navigation() {
     }
 
     return (
-        <nav className="navbar" aria-label="Primary navigation">
+        <nav className="navbar" aria-label="Main navigation">
             <button
                 type="button"
                 className="navbar-toggle"

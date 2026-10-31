@@ -17,7 +17,7 @@ export default function WorkoutTimerIndex() {
     });
     return (
         <div className="container">
-            <p> workoutTimer </p>
+            <h1 className="page-title">Workout Timer</h1>
             {workoutlist}
         </div>
     );

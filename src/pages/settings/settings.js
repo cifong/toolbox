@@ -2,7 +2,7 @@ import React from "react";
 export default function Settings() {
     return (
         <div className="container">
-            <p> settings: </p>
+            <h1 className="page-title">Settings</h1>
         </div>
     );
 };

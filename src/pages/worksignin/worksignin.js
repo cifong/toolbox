@@ -29,10 +29,10 @@ function WorkTimeInfo(props) {
     const curtime = new Date();
     const isTime = curtime >= punchoutTime;
     return <>
-        <div>punchIn: {new Date(punchInTime).toLocaleString()}</div>
-        <div>punchOut: {punchoutTime.toLocaleString()}</div>
-        <div>curtime: {curtime.toLocaleString()}</div>
-        <div>isTime: {isTime ? 'yes' : 'no'}</div>
+        <div>Clock-in: {new Date(punchInTime).toLocaleString()}</div>
+        <div>Estimated clock-out: {punchoutTime.toLocaleString()}</div>
+        <div>Current time: {curtime.toLocaleString()}</div>
+        <div>Workday complete: {isTime ? 'Yes' : 'No'}</div>
     </>
 }
 export default function Worksignin() {
@@ -66,25 +66,25 @@ export default function Worksignin() {
     }
     return (
         <div className="container">
-            <p> worksignin </p>
-            <button onClick={handleSign}>Sign In</button>
+            <h1 className="page-title">Work Sign In</h1>
+            <button onClick={handleSign}>Clock In</button>
 
             <div className="work-config-row">
-                <span className="work-config-label">work:</span>
+                <span className="work-config-label">Work duration</span>
                 <input type="number" name="workingHours" min="0" max="12" value={workTime.workingHours} onChange={handleConfig} />
                 <span>hours</span>
                 <input type="number" name="workingMinutes" min="0" max="59" value={workTime.workingMinutes} onChange={handleConfig} />
                 <span>minutes</span>
             </div>
             <div className="work-config-row">
-                <span className="work-config-label">lunchBreak:</span>
+                <span className="work-config-label">Lunch break</span>
                 <input type="number" name="lunchBreakHours" min="0" max="2" value={workTime.lunchBreakHours} onChange={handleConfig} />
                 <span>hours</span>
                 <input type="number" name="lunchBreakMinutes" min="0" max="59" value={workTime.lunchBreakMinutes} onChange={handleConfig} />
                 <span>minutes</span>
             </div>
             <div className="work-config-row">
-                <span className="work-config-label">DayOff:</span>
+                <span className="work-config-label">Time off</span>
                 <input type="number" name="dayOffHours" min="0" max="8" value={workTime.dayOffHours} onChange={handleConfig} />
                 <span>hours</span>
                 <input type="number" name="dayOffMinutes" min="0" max="59" value={workTime.dayOffMinutes} onChange={handleConfig} />

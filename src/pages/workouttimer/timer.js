@@ -19,7 +19,7 @@ function Countdown(props) {
     const togglePlayStatus = () => setCountdownInfo((preState) => {
         return { ...preState, playStatus: !preState.playStatus };
     });
-    const btnText = countdownInfo.playStatus ? 'Pause' : 'Start';
+    const btnText = countdownInfo.playStatus ? 'Pause Timer' : 'Start Timer';
 
     React.useEffect(() => {
         if (!countdownInfo.playStatus) {
@@ -64,10 +64,10 @@ function Countdown(props) {
     };
     return (
         <div className="container">
-            <p> workoutTimer </p>
+            <h1 className="page-title">Workout Timer</h1>
             <div className="countdown-btn-wrapper">
                 <button onClick={togglePlayStatus}>{btnText}</button>
-                <NavLink to={`/workouttimer`}><button>back</button></NavLink>
+                <NavLink to={`/workouttimer`}><button>Back to Workouts</button></NavLink>
             </div>
             <div style={style} className='countdown-wrapper'>
                 <div>{countdownInfo.rountCount}:{props.data[countdownInfo.dataidx].rounds}</div>

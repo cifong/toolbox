@@ -12,18 +12,17 @@ function WeatherItem(props) {
         getWeather(props.lat, props.lon, Intl.DateTimeFormat().resolvedOptions().timeZone)
             .then(res => setWeatherData(res));
     }, [props.lat, props.lon]);
-    console.log(weatherData);
     if (!weatherData) {
         return <div className="weatherItem">
-            loading!
+            Loading weather…
         </div>
     }
 
     const options = {  month: 'numeric', day: 'numeric' };
     const dailyWeather = weatherData.daily.map((info, index) => {
         return <div key={index}>
-            <div>{new Date(info.timestamp).toLocaleDateString(undefined, options)} {info.weatherdescription}  {info.temperatureMin} ~ {info.temperatureMax}</div>
-            <div>sunrise: {new Date(info.sunrise).toLocaleTimeString()} sunset: {new Date(info.sunset).toLocaleTimeString()}</div>
+            <div>{new Date(info.timestamp).toLocaleDateString(undefined, options)} · {info.weatherdescription} · {info.temperatureMin} ~ {info.temperatureMax}</div>
+            <div>Sunrise: {new Date(info.sunrise).toLocaleTimeString()} · Sunset: {new Date(info.sunset).toLocaleTimeString()}</div>
         </div>;
     });
     return <div className="weatherItem">

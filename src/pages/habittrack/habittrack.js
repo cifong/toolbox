@@ -152,17 +152,19 @@ export default function HabitTrack() {
     const weektitle = datatime.map((v, i) => <WeekTitle key={`day-${i}`} data={v} />);
     return (
         <div className="container">
-            <p> HabitTrack </p>
+            <h1 className="page-title">Habit Track</h1>
             <div className="habit-add-wraper">
                 <form onSubmit={handleSubmit}>
                     <input
                         type="text"
                         name="Username"
                         defaultValue=''
+                        aria-label="Habit name"
+                        placeholder="Habit name"
                         autoComplete="off"
                         required
                     />
-                    <input type="submit" value="add" />
+                    <input type="submit" value="Add Habit" />
                 </form>
             </div>
             <div className="habit-wrapper">
@@ -171,7 +173,7 @@ export default function HabitTrack() {
                 {habitlistelement}
             </div>
             <div>
-                <button onClick={handleSettleAccounts}>settle accounts</button>
+                <button onClick={handleSettleAccounts}>Reset Week</button>
             </div>
         </div>
     );
