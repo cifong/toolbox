@@ -2,7 +2,7 @@
 
 ## 專案事實
 
-- 本專案使用 Vite、React 19、React Router DOM 6 與 npm。實際安裝版本以 `package-lock.json` 和安裝環境為準；不要只依賴 `package.json` 的版本範圍。
+- 本專案使用 Vite、React 19、React Router DOM 7 與 npm。實際安裝版本以 `package-lock.json` 和安裝環境為準；不要只依賴 `package.json` 的版本範圍。
 - React 入口為 `src/index.jsx`；HTML 入口為根目錄的 `index.html`。頁面與路由記錄於 `docs/PROJECT_OVERVIEW.md`。
 - 頁面資料透過 `src/hooks/customhooks.js` 的 `useStorage` 存於瀏覽器 `localStorage`。不要假設有伺服器端持久化或安全的登入服務。
 

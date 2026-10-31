@@ -6,7 +6,7 @@
 | --- | --- |
 | 建置工具 | Vite |
 | UI | React、React DOM 19.3.1 |
-| 路由 | React Router DOM 6.30.6，入口使用 `HashRouter` |
+| 路由 | React Router DOM 7.18.5，入口使用 `HashRouter` |
 | 樣式 | `src/assets/App.css` |
 | 狀態 | React Context（登入狀態）及 React Hooks；頁面資料使用瀏覽器 `localStorage` |
 | 測試 | Vitest、jsdom、React Testing Library；目前只有一個範例測試 |
