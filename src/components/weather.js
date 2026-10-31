@@ -8,14 +8,27 @@ const location = [
 ];
 function WeatherItem(props) {
     const [weatherData, setWeatherData] = React.useState(null);
+    const [error, setError] = React.useState(false);
     React.useEffect(() => {
+        let active = true;
+        setWeatherData(null);
+        setError(false);
         getWeather(props.lat, props.lon, Intl.DateTimeFormat().resolvedOptions().timeZone)
-            .then(res => setWeatherData(res));
+            .then(res => { if (active) setWeatherData(res); })
+            .catch(() => { if (active) setError(true); });
+        return () => { active = false; };
     }, [props.lat, props.lon]);
+    if (error) {
+        return <section className="weatherItem" aria-label={`${props.place} weather`}>
+            <h3>{props.place}</h3>
+            <p className="weather-error" role="status">Weather could not be loaded. Check your connection and try again later.</p>
+        </section>;
+    }
     if (!weatherData) {
-        return <div className="weatherItem">
-            Loading weather…
-        </div>
+        return <section className="weatherItem" aria-label={`${props.place} weather`} aria-busy="true">
+            <h3>{props.place}</h3>
+            <p className="weather-loading" role="status">Loading weather…</p>
+        </section>;
     }
 
     const options = {  month: 'numeric', day: 'numeric' };
@@ -25,16 +38,16 @@ function WeatherItem(props) {
             <div>Sunrise: {new Date(info.sunrise).toLocaleTimeString()} · Sunset: {new Date(info.sunset).toLocaleTimeString()}</div>
         </div>;
     });
-    return <div className="weatherItem">
+    return <section className="weatherItem" aria-label={`${props.place} weather`}>
         <div className="curWeather">
-            <div>{props.place}</div>
-            <div>{weatherData.current.temperature}</div>
-            <div>{weatherData.current.weatherdescription}</div>
+            <h3>{props.place}</h3>
+            <strong>{weatherData.current.temperature}</strong>
+            <span>{weatherData.current.weatherdescription}</span>
         </div>
         <div className="dailyWeather">
             {dailyWeather}
         </div>
-    </div>
+    </section>
 }
 export default function Weather() {
 
@@ -43,7 +56,7 @@ export default function Weather() {
     });
 
     return (
-        <div className="weatherWraooer">
+        <div className="weather-wrapper">
             {weatherContent}
         </div>
     );

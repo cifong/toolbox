@@ -29,10 +29,13 @@ function WorkTimeInfo(props) {
     const curtime = new Date();
     const isTime = curtime >= punchoutTime;
     return <>
-        <div>Clock-in: {new Date(punchInTime).toLocaleString()}</div>
-        <div>Estimated clock-out: {punchoutTime.toLocaleString()}</div>
-        <div>Current time: {curtime.toLocaleString()}</div>
-        <div>Workday complete: {isTime ? 'Yes' : 'No'}</div>
+        <section className="work-result" aria-label="Clock-in summary">
+            <h2 className="section-title">Today’s time</h2>
+            <p><span>Clocked in</span><strong>{new Date(punchInTime).toLocaleString()}</strong></p>
+            <p><span>Estimated clock-out</span><strong>{punchoutTime.toLocaleString()}</strong></p>
+            <p><span>Current time</span><strong>{curtime.toLocaleString()}</strong></p>
+            <p><span>Workday status</span><strong>{isTime ? 'Complete' : 'In progress'}</strong></p>
+        </section>
     </>
 }
 export default function Worksignin() {
@@ -67,29 +70,25 @@ export default function Worksignin() {
     return (
         <div className="container">
             <h1 className="page-title">Work Sign In</h1>
-            <button onClick={handleSign}>Clock In</button>
+            <p className="page-description">Set your work and break durations, then clock in to estimate your finish time.</p>
+            <button className="clock-in-button" onClick={handleSign}>{workTime.punchInTime ? 'Clock in again' : 'Clock in now'}</button>
 
-            <div className="work-config-row">
-                <span className="work-config-label">Work duration</span>
-                <input type="number" name="workingHours" min="0" max="12" value={workTime.workingHours} onChange={handleConfig} />
-                <span>hours</span>
-                <input type="number" name="workingMinutes" min="0" max="59" value={workTime.workingMinutes} onChange={handleConfig} />
-                <span>minutes</span>
-            </div>
-            <div className="work-config-row">
-                <span className="work-config-label">Lunch break</span>
-                <input type="number" name="lunchBreakHours" min="0" max="2" value={workTime.lunchBreakHours} onChange={handleConfig} />
-                <span>hours</span>
-                <input type="number" name="lunchBreakMinutes" min="0" max="59" value={workTime.lunchBreakMinutes} onChange={handleConfig} />
-                <span>minutes</span>
-            </div>
-            <div className="work-config-row">
-                <span className="work-config-label">Time off</span>
-                <input type="number" name="dayOffHours" min="0" max="8" value={workTime.dayOffHours} onChange={handleConfig} />
-                <span>hours</span>
-                <input type="number" name="dayOffMinutes" min="0" max="59" value={workTime.dayOffMinutes} onChange={handleConfig} />
-                <span>minutes</span>
-            </div>
+            <section className="work-settings" aria-label="Work duration settings">
+                <h2 className="section-title">Time settings</h2>
+                {[
+                    ['Work duration', 'workingHours', 'workingMinutes'],
+                    ['Lunch break', 'lunchBreakHours', 'lunchBreakMinutes'],
+                    ['Time off', 'dayOffHours', 'dayOffMinutes']
+                ].map(([label, hoursName, minutesName]) => (
+                    <fieldset className="work-config-row" key={label}>
+                        <legend className="work-config-label">{label}</legend>
+                        <label htmlFor={hoursName}>Hours</label>
+                        <input id={hoursName} type="number" name={hoursName} min="0" max={hoursName === 'workingHours' ? 12 : hoursName === 'lunchBreakHours' ? 2 : 8} value={workTime[hoursName]} onChange={handleConfig} />
+                        <label htmlFor={minutesName}>Minutes</label>
+                        <input id={minutesName} type="number" name={minutesName} min="0" max="59" value={workTime[minutesName]} onChange={handleConfig} />
+                    </fieldset>
+                ))}
+            </section>
             <WorkTimeInfo data={workTime} />
         </div>
     );

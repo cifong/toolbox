@@ -44,15 +44,18 @@ export async function getWeather(lat, lon, timezone) {
         timezone: timezone
     };
     url.search = new URLSearchParams(params).toString();
-    return fetch(url)
-            .then(response => response.json())
-            .catch(error => console.error('Error:', error))
-            .then(data => {
-                return {
-                    current: parseCurrentWeather(data),
-                    daily: parseDailyWeather(data)
-                }
-            });
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error(`Weather request failed (${response.status})`);
+    }
+    const data = await response.json();
+    if (!data.current_weather || !data.daily || !Array.isArray(data.daily.time)) {
+        throw new Error('Weather response was incomplete');
+    }
+    return {
+        current: parseCurrentWeather(data),
+        daily: parseDailyWeather(data)
+    };
 }
 
 function parseCurrentWeather({current_weather}) {

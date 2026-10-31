@@ -7,27 +7,21 @@ export default function Dashboard() {
     const yearfirstday = new Date(now.getFullYear(), 0, 1).getTime();
     const yearlastday = new Date(now.getFullYear() + 1, 0, 1).getTime();
     const yearProcess = getNowPercent(yearfirstday, yearlastday);
-    const yearStyle = {
-        backgroundImage: `linear-gradient(to right, #f90 0%, #f90 ${yearProcess}%, white 0, white 100%)`
-    };
     const monthfirstday = new Date(now.getFullYear(), now.getMonth(), 1).getTime();
     const monthlastday = new Date(now.getFullYear(), now.getMonth() + 1, 1).getTime();
     const mothProcess = getNowPercent(monthfirstday, monthlastday);
-    const monthStyle = {
-        backgroundImage: `linear-gradient(to right, #f90 0%, #f90 ${mothProcess}%, white 0, white 100%)`
-    };
     const daystart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
     const dayend = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1).getTime();
     const dayProcess = getNowPercent(daystart, dayend);
-    const dayStyle = {
-        backgroundImage: `linear-gradient(to right, #f90 0%, #f90 ${dayProcess}%, white 0, white 100%)`
-    };
     const weekfirstday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - ((now.getDay() + 6) % 7));
     const weeklastday = new Date(weekfirstday.getFullYear(), weekfirstday.getMonth(), weekfirstday.getDate() + 7);
     const weekProcess = getNowPercent(weekfirstday.getTime(), weeklastday.getTime());
-    const weekStyle = {
-        backgroundImage: `linear-gradient(to right, #f90 0%, #f90 ${weekProcess}%, white 0, white 100%)`
-    };
+    const progressItems = [
+        ['Year', yearProcess],
+        ['Month', mothProcess],
+        ['Week', weekProcess],
+        ['Today', dayProcess]
+    ];
     React.useEffect(() => {
         const timeid = setTimeout(() => {
             setTimestamp(new Date().getTime());
@@ -37,15 +31,21 @@ export default function Dashboard() {
     return (
         <div className="container">
             <h1 className="page-title">Dashboard</h1>
-            <p>Year Progress</p>
-            <div className="time-process" style={yearStyle}>{yearProcess}%</div>
-            <p>Month Progress</p>
-            <div className="time-process" style={monthStyle}>{mothProcess}%</div>
-            <p>Week Progress</p>
-            <div className="time-process" style={weekStyle}>{weekProcess}%</div>
-            <p>Today’s Progress</p>
-            <div className="time-process" style={dayStyle}>{dayProcess}%</div>
-            <Weather/>
+            <section className="progress-section" aria-label="Time progress">
+                {progressItems.map(([label, value]) => (
+                    <article className="progress-card" key={label}>
+                        <div className="progress-card-heading"><h2>{label}</h2><strong>{value}%</strong></div>
+                        <div className="progress-track" role="progressbar" aria-label={`${label} progress`} aria-valuenow={value} aria-valuemin="0" aria-valuemax="100">
+                            <span style={{ width: `${value}%` }} />
+                        </div>
+                        <p>Time elapsed this {label.toLowerCase()}</p>
+                    </article>
+                ))}
+            </section>
+            <section className="weather-section">
+                <h2 className="section-title">Weather by location</h2>
+                <Weather />
+            </section>
         </div>
     );
 };

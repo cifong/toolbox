@@ -19,7 +19,8 @@ function CheckBox(props) {
         });
     };
     return <label className="meal-field meal-status-field">
-        <span className="meal-field-label">Spent today</span>
+        <span className="meal-field-label">Day status</span>
+        <span className="meal-status-text">Spent</span>
         <input
             type="checkbox"
             className="habit-checkbox"
@@ -33,14 +34,14 @@ function MoneyDetail(props) {
     const [show, setShow] = React.useState(false);
     const content = !show ? props.data.expendDetail.reduce((a, c) => a + c, 0) : props.data.expendDetail.join(' + ');
     return <div className="meal-field">
-        <span className="meal-field-label">Spent</span>
+        <span className="meal-field-label">Expenses (NT$)</span>
         <button
             type="button"
             className="money-detail-button"
             onClick={() => setShow(preState => !preState)}
             aria-expanded={show}
         >
-            {content}
+            {content || 'NT$ 0'}
         </button>
     </div>;
 }
@@ -63,7 +64,7 @@ function AddArea(props) {
     return <div className="meal-field meal-add-field">
         <label className="meal-field-label" htmlFor={`meal-amount-${props.day}`}>Add expense</label>
         <form onSubmit={addMeals}>
-            <input id={`meal-amount-${props.day}`} type="number" min="0" step="any" ref={numRef} aria-label={`Expense amount for ${props.dayLabel}`} placeholder="Amount" />
+            <div className="meal-amount-input"><span aria-hidden="true">NT$</span><input id={`meal-amount-${props.day}`} type="number" min="0" step="any" ref={numRef} aria-label={`Expense amount in NT dollars for ${props.dayLabel}`} placeholder="Amount" required /></div>
             <input type="submit" value="Add" />
         </form>
     </div>
@@ -104,12 +105,18 @@ function MealInfo(props) {
         });
 
     };
-    return <div className="meal-summary">
-        <label>Balance <input type="number" value={config.balance} name="balance" onChange={handConfig}/></label>
-        <label>Budget <input type="number" value={config.budget} name="budget" onChange={handConfig}/></label>
-        <div>New week balance: {newWeekBalance}</div>
-        <div><button type="button" onClick={handleSettleAccounts}>Settle Week</button></div>
-    </div>;
+    return <section className="meal-summary-section" aria-label="Meal budget and settlement">
+        <h2 className="section-title">Budget and balance</h2>
+        <div className="meal-summary">
+            <label htmlFor="meal-balance">Current balance (NT$)<input id="meal-balance" type="number" value={config.balance} name="balance" onChange={handConfig}/></label>
+            <label htmlFor="meal-budget">Daily budget (NT$)<input id="meal-budget" type="number" value={config.budget} name="budget" onChange={handConfig}/></label>
+        </div>
+        <div className="meal-settlement">
+            <div><span className="meal-field-label">Projected balance after settlement</span><strong>NT$ {newWeekBalance}</strong></div>
+            <p>Unused daily budget is added to the current balance; the week’s expense rows will then be cleared.</p>
+            <button type="button" onClick={handleSettleAccounts}>Settle week</button>
+        </div>
+    </section>;
 }
 export default function Meals() {
     const { token } = useAuth();
@@ -137,6 +144,8 @@ export default function Meals() {
     return (
         <div className="container">
             <h1 className="page-title">Meals</h1>
+            <p className="page-description">Record each day’s status and expenses in NT dollars.</p>
+            <div className="meal-day-header" aria-hidden="true"><span>Date</span><span>Status</span><span>Expenses</span><span>Add expense</span></div>
             <div className="mealswrapper">
                 {mealselement}
             </div>

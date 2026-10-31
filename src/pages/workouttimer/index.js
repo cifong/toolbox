@@ -10,14 +10,16 @@ export default function WorkoutTimerIndex() {
             backgroundImage: info.background
         };
         return (
-            <NavLink key={info.id} to={`/workouttimer/${info.id}`} className="workoutitem"><div className="workoutitem"  style={style}>
-                {info.name}
-            </div></NavLink>
+            <NavLink key={info.id} to={`/workouttimer/${info.id}`} className="workoutitem" style={style}>
+                <span className="workout-card-name">{info.name}</span>
+                <span className="workout-card-action">Choose workout <span aria-hidden="true">→</span></span>
+            </NavLink>
         )
     });
     return (
         <div className="container">
             <h1 className="page-title">Workout Timer</h1>
+            <p className="page-description">Choose a workout to open its interval timer.</p>
             {workoutlist}
         </div>
     );

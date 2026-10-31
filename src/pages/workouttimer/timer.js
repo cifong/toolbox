@@ -1,7 +1,7 @@
 import React from "react";
 import { workoutTimerData } from "data/workouttimer";
 import {
-    NavLink,
+    Link,
     useParams
 } from 'react-router-dom';
 
@@ -19,7 +19,8 @@ function Countdown(props) {
     const togglePlayStatus = () => setCountdownInfo((preState) => {
         return { ...preState, playStatus: !preState.playStatus };
     });
-    const btnText = countdownInfo.playStatus ? 'Pause Timer' : 'Start Timer';
+    const btnText = countdownInfo.playStatus ? 'Pause timer' : 'Start timer';
+    const formatTime = (seconds) => `${Math.floor(seconds / 60).toString().padStart(2, '0')}:${(seconds % 60).toString().padStart(2, '0')}`;
 
     React.useEffect(() => {
         if (!countdownInfo.playStatus) {
@@ -65,13 +66,14 @@ function Countdown(props) {
     return (
         <div className="container">
             <h1 className="page-title">Workout Timer</h1>
-            <div className="countdown-btn-wrapper">
-                <button onClick={togglePlayStatus}>{btnText}</button>
-                <NavLink to={`/workouttimer`}><button>Back to Workouts</button></NavLink>
+            <div style={style} className="countdown-wrapper">
+                <p className="timer-phase">{countdownInfo.name}</p>
+                <strong className="timer-remaining" aria-live="polite" aria-label={`${countdownInfo.sec} seconds remaining`}>{formatTime(countdownInfo.sec)}</strong>
+                <p className="timer-round">Round {countdownInfo.rountCount} of {props.data[countdownInfo.dataidx].rounds}</p>
             </div>
-            <div style={style} className='countdown-wrapper'>
-                <div>{countdownInfo.rountCount}:{props.data[countdownInfo.dataidx].rounds}</div>
-                <div>{countdownInfo.name}:{countdownInfo.sec}</div>
+            <div className="countdown-btn-wrapper">
+                <button type="button" onClick={togglePlayStatus}>{btnText}</button>
+                <Link className="button-link" to="/workouttimer">Back to workouts</Link>
             </div>
         </div>
     );
