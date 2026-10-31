@@ -60,15 +60,16 @@
 ## 頁面與外部資料
 
 - **Dashboard**：計算年、月、週、日進度；包含 Weather 元件。
-- **Weather**：依程式碼內的 Xihu 與 Nantun 經緯度載入目前及未來三日天氣。
-- **HabitTrack**：習慣名稱與七日勾選狀態保存於 localStorage。
-- **Meals**：每日狀態、支出明細、預算及餘額保存於 localStorage。
-- **Worksignin**：上班時間設定與打卡時間保存於 localStorage，並計算預估下班時間。
-- **WorkoutTimer**：清單及計時流程使用 `src/data/workouttimer.js` 的靜態資料；`:tid` 對應資料 id。
+- **Weather**：依程式碼內的 Xihu 與 Nantun 經緯度載入目前及未來三日天氣；載入期間顯示提示，請求失敗或沒有預報資料時顯示說明與重試按鈕。
+- **HabitTrack**：習慣名稱與七日勾選狀態保存於 localStorage。清單為空時提示新增方式；新增、勾選及清除本週勾選後，會以即時狀態訊息回報結果。習慣勾選框及編輯、刪除控制有可辨識名稱。
+- **Meals**：每日狀態、支出明細、預算及餘額保存於 localStorage。尚無支出時顯示新增指引；支出金額須大於零，新增成功或輸入無效時會顯示狀態訊息。
+- **Worksignin**：上班時間設定與打卡時間保存於 localStorage，並計算預估下班時間。打卡前會檢查時數範圍及工作時間是否大於請假時間；打卡結果或設定錯誤會顯示狀態訊息。
+- **WorkoutTimer**：清單及計時流程使用 `src/data/workouttimer.js` 的靜態資料；`:tid` 對應資料 id。可開始、暫停及重新開始計時，並以狀態訊息回報開始、暫停或完成；找不到計時資料或步驟時顯示返回清單的提示。
+- **Login**：帳號與密碼欄位為必填；密碼不符時顯示錯誤訊息。
 - **Settings**：目前為簡單頁面。
 - **TodoList**：元件檔案存在但尚未路由整合。
 
-`src/data/weather.js` 對 `https://api.open-meteo.com/v1/forecast` 發出 `fetch`，傳送緯度、經度、每日欄位、時間格式、預報天數及時區，並將回傳值轉換成元件使用的欄位。程式碼沒有配置 API key 或環境變數。錯誤處理目前未顯示清楚的失敗狀態；API 可用性及實際回應未於本次檢查驗證。
+`src/data/weather.js` 對 `https://api.open-meteo.com/v1/forecast` 發出 `fetch`，傳送緯度、經度、每日欄位、時間格式、預報天數及時區，並將回傳值轉換成元件使用的欄位。程式碼沒有配置 API key 或環境變數。API 可用性及實際回應未於本次檢查驗證。
 
 ## 品質與部署設定
 
