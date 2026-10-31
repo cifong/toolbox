@@ -47,10 +47,15 @@ function MoneyDetail(props) {
 }
 function AddArea(props) {
     const numRef = React.useRef(null);
+    const [message, setMessage] = React.useState('');
     const addMeals = (e) => {
         e.preventDefault();
         const cost = +numRef.current.value;
-        if(cost === 0) return;
+        if (!Number.isFinite(cost) || cost <= 0) {
+            setMessage('Enter an amount greater than NT$ 0.');
+            numRef.current.focus();
+            return;
+        }
         numRef.current.value = '';
         props.handleMeals(preState => {
             const res = [...preState];
@@ -60,13 +65,15 @@ function AddArea(props) {
             res[props.day].expendDetail = [...res[props.day].expendDetail, cost];
             return res;
         });
+        setMessage(`NT$ ${cost} added for ${props.dayLabel}.`);
     };
     return <div className="meal-field meal-add-field">
         <label className="meal-field-label" htmlFor={`meal-amount-${props.day}`}>Add expense</label>
-        <form onSubmit={addMeals}>
-            <div className="meal-amount-input"><span aria-hidden="true">NT$</span><input id={`meal-amount-${props.day}`} type="number" min="0" step="any" ref={numRef} aria-label={`Expense amount in NT dollars for ${props.dayLabel}`} placeholder="Amount" required /></div>
+        <form onSubmit={addMeals} noValidate>
+            <div className="meal-amount-input"><span aria-hidden="true">NT$</span><input id={`meal-amount-${props.day}`} type="number" min="0.01" step="any" ref={numRef} aria-label={`Expense amount in NT dollars for ${props.dayLabel}`} placeholder="Amount" aria-describedby={`meal-message-${props.day}`} required /></div>
             <input type="submit" value="Add" />
         </form>
+        <p id={`meal-message-${props.day}`} className={`status-message${message.startsWith('Enter') ? ' form-error' : ''}`} role="status" aria-live="polite">{message}</p>
     </div>
 }
 function MealInfo(props) {
@@ -141,11 +148,13 @@ export default function Meals() {
             </section>
         );
     });
+    const hasExpenses = meals.some(meal => meal.expendDetail.length > 0);
     return (
         <div className="container">
             <h1 className="page-title">Meals</h1>
             <p className="page-description">Record each day’s status and expenses in NT dollars.</p>
             <div className="meal-day-header" aria-hidden="true"><span>Date</span><span>Status</span><span>Expenses</span><span>Add expense</span></div>
+            {!hasExpenses && <div className="empty-state"><h2>No expenses recorded yet</h2><p>Enter an amount in a day’s “Add expense” field and select Add to start your weekly record.</p></div>}
             <div className="mealswrapper">
                 {mealselement}
             </div>

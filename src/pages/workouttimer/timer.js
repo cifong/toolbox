@@ -12,13 +12,17 @@ function Countdown(props) {
             dataidx: 0,
             rountCount: 1,
             listidx: 0,
-            playStatus: false
+            playStatus: false,
+            completed: false
         }
     }, [props.data]);
     const [countdownInfo, setCountdownInfo] = React.useState(initCountdownInfo);
-    const togglePlayStatus = () => setCountdownInfo((preState) => {
-        return { ...preState, playStatus: !preState.playStatus };
-    });
+    const [status, setStatus] = React.useState('');
+    const togglePlayStatus = () => {
+        const playStatus = !countdownInfo.playStatus;
+        setStatus(countdownInfo.completed ? 'Timer restarted.' : playStatus ? 'Timer started.' : 'Timer paused.');
+        setCountdownInfo(preState => ({ ...preState, playStatus, completed: false }));
+    };
     const btnText = countdownInfo.playStatus ? 'Pause timer' : 'Start timer';
     const formatTime = (seconds) => `${Math.floor(seconds / 60).toString().padStart(2, '0')}:${(seconds % 60).toString().padStart(2, '0')}`;
 
@@ -55,11 +59,14 @@ function Countdown(props) {
                         listidx: 0
                     };
                 }
-                return initCountdownInfo;
+                return { ...initCountdownInfo, completed: true };
             });
         }
         return () => clearInterval(timerID);
     }, [countdownInfo.playStatus, props.data, initCountdownInfo]);
+    React.useEffect(() => {
+        if (countdownInfo.completed) setStatus('Workout complete. Choose Start timer to run it again.');
+    }, [countdownInfo.completed]);
     const style = {
         backgroundColor: props.data[countdownInfo.dataidx].list[countdownInfo.listidx].bgcolor
     };
@@ -68,13 +75,14 @@ function Countdown(props) {
             <h1 className="page-title">Workout Timer</h1>
             <div style={style} className="countdown-wrapper">
                 <p className="timer-phase">{countdownInfo.name}</p>
-                <strong className="timer-remaining" aria-live="polite" aria-label={`${countdownInfo.sec} seconds remaining`}>{formatTime(countdownInfo.sec)}</strong>
+                <strong className="timer-remaining" aria-label={`${countdownInfo.sec} seconds remaining`}>{formatTime(countdownInfo.sec)}</strong>
                 <p className="timer-round">Round {countdownInfo.rountCount} of {props.data[countdownInfo.dataidx].rounds}</p>
             </div>
             <div className="countdown-btn-wrapper">
                 <button type="button" onClick={togglePlayStatus}>{btnText}</button>
                 <Link className="button-link" to="/workouttimer">Back to workouts</Link>
             </div>
+            <p className="status-message" role="status" aria-live="polite">{status}</p>
         </div>
     );
 }
@@ -83,8 +91,8 @@ export default function WorkoutTimer() {
     const params = useParams();
     const data = workoutTimerData.find(info => info.id === params.tid);
 
-    if (!data) {
-        return <h3>data not found</h3>
+    if (!data || !Array.isArray(data.data) || data.data.length === 0 || data.data.some(phase => !phase.list?.length || phase.rounds < 1)) {
+        return <div className="container"><h1 className="page-title">Workout Timer</h1><div className="empty-state"><h2>Workout unavailable</h2><p>This workout has no timer steps. Go back and choose another workout.</p><Link className="button-link" to="/workouttimer">Back to workouts</Link></div></div>;
     };
 
     return (

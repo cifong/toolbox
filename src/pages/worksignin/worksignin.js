@@ -49,13 +49,25 @@ export default function Worksignin() {
         dayOffMinutes: 0,
         punchInTime: null
     });
+    const [status, setStatus] = React.useState('');
     const handleSign = () => {
+        const fields = [
+            ['workingHours', 12], ['workingMinutes', 59],
+            ['lunchBreakHours', 2], ['lunchBreakMinutes', 59],
+            ['dayOffHours', 8], ['dayOffMinutes', 59]
+        ];
+        const invalid = fields.some(([name, max]) => workTime[name] === '' || !Number.isInteger(Number(workTime[name])) || Number(workTime[name]) < 0 || Number(workTime[name]) > max);
+        if (invalid || (workTime.workingHours * 60 + workTime.workingMinutes <= workTime.dayOffHours * 60 + workTime.dayOffMinutes)) {
+            setStatus('Check the time settings. Enter whole numbers within the shown limits, and make work duration longer than time off.');
+            return;
+        }
         setWorkTime(preState => {
             return {
                 ...preState,
                 punchInTime: new Date().getTime()
             };
         });
+        setStatus('Clock-in recorded. Your estimated clock-out time is shown below.');
     };
     const handleConfig = (e) => {
         const value = +e.target.value;
@@ -71,7 +83,8 @@ export default function Worksignin() {
         <div className="container">
             <h1 className="page-title">Work Sign In</h1>
             <p className="page-description">Set your work and break durations, then clock in to estimate your finish time.</p>
-            <button className="clock-in-button" onClick={handleSign}>{workTime.punchInTime ? 'Clock in again' : 'Clock in now'}</button>
+            <button type="button" className="clock-in-button" onClick={handleSign}>{workTime.punchInTime ? 'Clock in again' : 'Clock in now'}</button>
+            <p className="status-message" role="status" aria-live="polite">{status}</p>
 
             <section className="work-settings" aria-label="Work duration settings">
                 <h2 className="section-title">Time settings</h2>
@@ -83,9 +96,9 @@ export default function Worksignin() {
                     <fieldset className="work-config-row" key={label}>
                         <legend className="work-config-label">{label}</legend>
                         <label htmlFor={hoursName}>Hours</label>
-                        <input id={hoursName} type="number" name={hoursName} min="0" max={hoursName === 'workingHours' ? 12 : hoursName === 'lunchBreakHours' ? 2 : 8} value={workTime[hoursName]} onChange={handleConfig} />
+                        <input id={hoursName} type="number" name={hoursName} min="0" max={hoursName === 'workingHours' ? 12 : hoursName === 'lunchBreakHours' ? 2 : 8} step="1" required value={workTime[hoursName]} onChange={handleConfig} />
                         <label htmlFor={minutesName}>Minutes</label>
-                        <input id={minutesName} type="number" name={minutesName} min="0" max="59" value={workTime[minutesName]} onChange={handleConfig} />
+                        <input id={minutesName} type="number" name={minutesName} min="0" max="59" step="1" required value={workTime[minutesName]} onChange={handleConfig} />
                     </fieldset>
                 ))}
             </section>

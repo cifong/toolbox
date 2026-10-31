@@ -20,7 +20,9 @@ export default function WorkoutTimerIndex() {
         <div className="container">
             <h1 className="page-title">Workout Timer</h1>
             <p className="page-description">Choose a workout to open its interval timer.</p>
-            {workoutlist}
+            {workoutlist.length === 0
+                ? <div className="empty-state"><h2>No workouts available</h2><p>There are no workout routines to start right now.</p></div>
+                : workoutlist}
         </div>
     );
 };

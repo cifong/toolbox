@@ -760,6 +760,11 @@ a {
 .empty-state { display: flex; flex-direction: column; gap: 6px; padding: 20px; background: #f8fbfb; border: 1px solid var(--color-border); border-radius: 11px; }
 .empty-state h2 { color: #23464d; font-size: 1.05rem; }
 .empty-state p { color: var(--color-muted); }
+.status-message { min-height: 1.5em; color: #174f55; font-size: 0.9rem; }
+.status-message:empty { display: none; }
+.form-error { min-height: 1.5em; margin: 0 0 8px; color: #8d332b; font-size: 0.9rem; }
+.form-error:empty { display: none; }
+.weather-retry { margin-top: 10px; }
 
 @media (max-width: 640px) {
   .progress-section, .weather-wrapper { grid-template-columns: minmax(0, 1fr); }

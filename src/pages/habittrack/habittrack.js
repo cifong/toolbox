@@ -10,6 +10,7 @@ function CheckBox(props) {
                 ? { ...habit, list: value ? habit.list | (1 << day) : habit.list & ~(1 << day) }
                 : habit);
         });
+        props.onChangeStatus(`${props.habitName} marked ${value ? 'done' : 'not done'} for ${props.dayName} ${props.date}.`);
     };
     return <label className={`habit-item-section habit-check-cell ${props.checked ? 'is-checked' : ''}`}>
         <input
@@ -94,7 +95,7 @@ function HabitItmeContent(props) {
     return <>
         <div className="habit-name-wrapper">
             {props.editMode
-                ? <form onSubmit={handleSubmit}><input type="text" value={props.habitName} onChange={props.handleHabitName}  data-act="input" ref={inputRef} /></form>
+                ? <form onSubmit={handleSubmit}><input type="text" aria-label={`Edit ${props.habitName}`} value={props.habitName} onChange={props.handleHabitName} data-act="input" ref={inputRef} /></form>
                 : <span className="habit-name-span">{props.habitName}</span>
             }
 
@@ -108,8 +109,12 @@ function HabitItmeContent(props) {
 export default function HabitTrack() {
     const { token } = useAuth();
     const [habitlist, setHabitList] = useStorage(`habitlist${token}`, []);
+    const [status, setStatus] = React.useState('');
     const addHabitListItem = (name) => {
-        if (!name.trim().length) return;
+        if (!name.trim().length) {
+            setStatus('Enter a habit name before adding it.');
+            return false;
+        }
         setHabitList((preState) => preState.concat(
             {
                 name: name.trim(),
@@ -117,13 +122,14 @@ export default function HabitTrack() {
                 id: new Date().getTime()
             })
         );
+        setStatus(`${name.trim()} added to your habits.`);
+        return true;
     };
     const handleSubmit = (e) => {
         e.preventDefault();
         const element = e.target.elements.Username;
         const username = element.value;
-        element.value = '';
-        addHabitListItem(username);
+        if (addHabitListItem(username)) element.value = '';
     };
     const datatime = createWeekend();
     const habitlistelement = habitlist.map((habit, index) => {
@@ -133,7 +139,7 @@ export default function HabitTrack() {
             const id = `${index}-${i}`;
             const mask = 1 << i;
             const [dayName, date] = datatime[i];
-            res.push(<CheckBox key={`list-${habit.id}-${id}`} id={id} habitName={habit.name} dayName={dayName} date={date} checked={Boolean(habit.list & mask)} handleHabitList={setHabitList} />);
+            res.push(<CheckBox key={`list-${habit.id}-${id}`} id={id} habitName={habit.name} dayName={dayName} date={date} checked={Boolean(habit.list & mask)} handleHabitList={setHabitList} onChangeStatus={setStatus} />);
         }
         return res;
     });
@@ -146,6 +152,7 @@ export default function HabitTrack() {
                 }
             });
         });
+        setStatus('This week’s habit checkmarks have been cleared.');
     };
     const weektitle = datatime.map((v, i) => <WeekTitle key={`day-${i}`} data={v} />);
     return (
@@ -168,11 +175,13 @@ export default function HabitTrack() {
                     <input type="submit" value="Add habit" />
                 </form>
             </div>
-            <div className="habit-wrapper">
+            <p className="status-message" role="status" aria-live="polite">{status}</p>
+            {habitlist.length === 0 && <div className="empty-state"><h2>No habits yet</h2><p>Add a habit above, then check off each day as you complete it.</p></div>}
+            {habitlist.length > 0 && <div className="habit-wrapper">
                 <div className="habit-item-section habit-corner">Habit</div>
                 {weektitle}
                 {habitlistelement}
-            </div>
+            </div>}
             <div>
                 <button type="button" onClick={handleSettleAccounts}>Clear this week</button>
             </div>

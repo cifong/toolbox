@@ -9,6 +9,7 @@ export default function Login() {
     const location = useLocation();
     const [username, setusername] = React.useState("");
     const [password, setpassword] = React.useState("");
+    const [error, setError] = React.useState("");
     
     if (token) {
         return <Navigate to={"/dashboard"} replace state={{ from: location }} />;
@@ -17,8 +18,10 @@ export default function Login() {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (password !== testpassword) {
+            setError("The password is incorrect. Check it and try again.");
             return;
         }
+        setError("");
         onLogin(username);
     };
     return (
@@ -33,6 +36,7 @@ export default function Login() {
                             id="Username"
                             name="Username"
                             value={username}
+                            required
                             onChange={(e) => setusername(e.target.value)}
                             autoComplete="username"
                         />
@@ -45,8 +49,10 @@ export default function Login() {
                             name="Password"
                             onChange={(e) => setpassword(e.target.value)}
                             autoComplete="current-password"
+                            required
                         />
                     </div>
+                    <p className="form-error" role="alert">{error}</p>
                     <input type="submit" value="Sign In" className="login-button" />
                 </form>
             </div>
