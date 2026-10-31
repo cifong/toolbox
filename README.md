@@ -4,7 +4,7 @@
 
 ## 環境需求
 
-- Node.js 24.14.0、npm 11.9.0 為目前盤點到的本機版本；尚未確認這是否為專案唯一支援的版本組合。
+- 目前本機驗證使用 Node.js 26.13.0、npm 11.20.0；專案尚未透過 `.nvmrc` 或 `engines` 欄位固定 Node.js 版本。
 - 依賴版本由 `package-lock.json` 鎖定。安裝時建議使用 `npm ci`。
 
 ## 安裝與啟動
@@ -22,11 +22,12 @@ npm start
 | --- | --- |
 | `npm start` | 啟動開發伺服器 |
 | `npm test` | 啟動 CRA/Jest 互動式測試；預設進入 watch 模式 |
+| `npm test -- --watchAll=false` | 執行一次 CRA/Jest 測試後結束 |
 | `npm run build` | 建置正式版至 `build/` |
 | `npm run deploy` | 先執行 `predeploy` 建置，再使用 `gh-pages -d build` 發布 |
 | `npm run eject` | 將 CRA 設定複製至專案；此操作不可逆，請勿在一般開發流程中執行 |
 
-目前只有 `src/App.test.js` 一個測試檔；該測試仍是 CRA 初始範例，與目前頁面及路由設定不一致。測試結果尚未確認。
+目前只有 `src/App.test.js` 一個測試檔。測試以 `MemoryRouter` 包住 `App`，並確認登入頁的 `Welcome` 標題可見。
 
 ## 部署
 
