@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { useAuth, useStorage } from "hooks/customhooks";
 
 const emptySettings = { apiKey: "", folderId: "" };
@@ -16,16 +17,14 @@ function isVideoFile(file) {
 
 export default function Player() {
     const { token } = useAuth();
-    const [settings, setSettings] = useStorage(`drivePlayerSettings-${token}`, emptySettings);
-    const [apiKeyInput, setApiKeyInput] = React.useState(settings.apiKey || "");
-    const [folderIdInput, setFolderIdInput] = React.useState(settings.folderId || "");
+    const [settings] = useStorage(`drivePlayerSettings-${token}`, emptySettings);
     const [mediaFiles, setMediaFiles] = React.useState([]);
     const [currentIndex, setCurrentIndex] = React.useState(-1);
     const [mediaType, setMediaType] = React.useState("");
     const [playMode, setPlayMode] = React.useState(0);
     const [isLoading, setIsLoading] = React.useState(false);
+    const [playlistLoadFailed, setPlaylistLoadFailed] = React.useState(false);
     const [error, setError] = React.useState("");
-    const [isSetupVisible, setIsSetupVisible] = React.useState(!settings.apiKey || !settings.folderId);
     const [currentTime, setCurrentTime] = React.useState(0);
     const [duration, setDuration] = React.useState(0);
     const [isPlaying, setIsPlaying] = React.useState(false);
@@ -36,6 +35,7 @@ export default function Player() {
 
     const loadPlaylist = React.useCallback(async (apiKey, folderId) => {
         setIsLoading(true);
+        setPlaylistLoadFailed(false);
         setError("");
         setMediaFiles([]);
         setCurrentIndex(-1);
@@ -82,12 +82,10 @@ export default function Player() {
             setMediaFiles(playableFiles);
             if (playableFiles.length === 0) {
                 setError("資料夾中找不到 MP3 或 MP4 檔案。");
-            } else {
-                setIsSetupVisible(false);
             }
         } catch (loadError) {
+            setPlaylistLoadFailed(true);
             setError(`載入失敗：${loadError.message}`);
-            setIsSetupVisible(true);
         } finally {
             setIsLoading(false);
         }
@@ -194,18 +192,6 @@ export default function Player() {
         else media.pause();
     }
 
-    function submitSettings(event) {
-        event.preventDefault();
-        const apiKey = apiKeyInput.trim();
-        const folderId = folderIdInput.trim();
-        if (!apiKey || !folderId) {
-            setError("請輸入 API Key 與資料夾 ID。");
-            return;
-        }
-        setSettings({ apiKey, folderId });
-        loadPlaylist(apiKey, folderId);
-    }
-
     function handleEnded() {
         if (currentMediaRef.current) playNext(false);
     }
@@ -215,22 +201,16 @@ export default function Player() {
             <h1 className="page-title">隨身雲端播放器</h1>
             <p className="page-description">載入 Google Drive 資料夾中的 MP3 與 MP4 檔案。</p>
 
-            {isSetupVisible && (
-                <form className="drive-player-setup" onSubmit={submitSettings}>
-                    <label>
-                        Google Drive API Key
-                        <input type="text" autoComplete="off" value={apiKeyInput} onChange={event => setApiKeyInput(event.target.value)} />
-                    </label>
-                    <label>
-                        資料夾 ID
-                        <input type="text" autoComplete="off" value={folderIdInput} onChange={event => setFolderIdInput(event.target.value)} />
-                    </label>
-                    <button type="submit" disabled={isLoading}>{isLoading ? "載入中…" : "儲存並載入播放清單"}</button>
-                    <p className="drive-player-note">API Key 會保存在此瀏覽器。此模式需要資料夾與媒體檔案可透過連結檢視；API Key 請限制可使用的網站與 API。</p>
-                </form>
+            {(!settings.apiKey || !settings.folderId) && !isLoading && (
+                <div className="empty-state">
+                    <h2>尚未設定 Google Drive</h2>
+                    <p>請先在設定頁填入 API Key 與資料夾 ID，再載入播放清單。</p>
+                    <Link to="/settings">前往設定</Link>
+                </div>
             )}
 
             {error && <p className="drive-player-message" role="alert">{error}</p>}
+            {playlistLoadFailed && <Link className="drive-player-edit" to="/settings">編輯 Drive 設定</Link>}
             {isLoading && <p className="drive-player-message" role="status">正在載入播放清單…</p>}
 
             <div className={`drive-player-video${mediaType === "video" ? " is-visible" : ""}`}>
@@ -257,8 +237,8 @@ export default function Player() {
                 onError={() => { if (currentMediaRef.current === audioRef.current) setError("音訊載入失敗，請確認分享權限或檔案格式。"); }}
             />
 
-            {mediaFiles.length === 0 && !isLoading && !error && (
-                <div className="empty-state"><h2>尚無播放清單</h2><p>輸入 API Key 和資料夾 ID 後載入 MP3、MP4 檔案。</p></div>
+            {settings.apiKey && settings.folderId && mediaFiles.length === 0 && !isLoading && !error && (
+                <div className="empty-state"><h2>尚無播放清單</h2><p>目前設定的資料夾中沒有 MP3 或 MP4 檔案。</p></div>
             )}
             {mediaFiles.length > 0 && (
                 <ul className="drive-player-playlist" aria-label="播放清單">
@@ -305,7 +285,6 @@ export default function Player() {
                         />
                         <span>{formatTime(duration)}</span>
                     </div>
-                    <button type="button" className="drive-player-edit" onClick={() => { setApiKeyInput(settings.apiKey || ""); setFolderIdInput(settings.folderId || ""); setIsSetupVisible(true); }}>編輯 Drive 設定</button>
                 </div>
             )}
         </section>

@@ -748,6 +748,9 @@ a {
 .work-result p span { color: var(--color-muted); }
 
 .drive-player { padding-bottom: 190px; }
+.settings-section { display: flex; flex-direction: column; gap: 12px; max-width: 700px; padding: 18px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 11px; }
+.settings-section h2 { color: #23464d; font-size: 1.12rem; }
+.settings-section > p { color: var(--color-muted); }
 .drive-player-setup { display: flex; flex-direction: column; gap: 12px; width: min(100%, 520px); margin: 0 auto; }
 .drive-player-setup label { display: flex; flex-direction: column; gap: 6px; color: var(--color-muted); font-size: 0.9rem; font-weight: 650; }
 .drive-player-setup input { width: 100%; }
@@ -777,6 +780,8 @@ a {
 .drive-player-seek { display: flex; align-items: center; gap: 10px; width: min(100%, 720px); margin: 0 auto; color: var(--color-muted); font-size: 0.75rem; font-variant-numeric: tabular-nums; }
 .drive-player-seek input[type='range'] { flex: 1; min-width: 0; height: 22px; accent-color: var(--color-primary); }
 .drive-player-edit { align-self: center; min-height: 30px; padding: 3px 8px; color: var(--color-muted); background: transparent; border: 0; font-size: 0.75rem; font-weight: 500; }
+.drive-player-edit, .settings-player-link { text-decoration: none; }
+.settings-message { color: #174f55; font-size: 0.9rem; }
 .drive-player-edit:hover { color: var(--color-primary-hover); background: var(--color-primary-soft); border: 0; }
 
 .workoutitem { flex-direction: column; align-items: flex-start; justify-content: space-between; min-height: 130px; border: 1px solid rgb(255 255 255 / 35%); }
