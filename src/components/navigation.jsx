@@ -8,7 +8,8 @@ const navigationItems = [
     { to: "/meals", label: "Meals" },
     { to: "/worksignin", label: "Work Sign In" },
     { to: "/workouttimer", label: "Workout Timer" },
-    { to: "/settings", label: "Settings" }
+    { to: "/settings", label: "Settings" },
+    { to: "/player", label: "Cloud Player" }
 ];
 
 function getCurrentPage(pathname) {

@@ -44,6 +44,7 @@
 | `/workouttimer` | WorkoutTimerIndex | ProtectedRoute |
 | `/workouttimer/:tid` | WorkoutTimer | ProtectedRoute |
 | `/settings` | Settings | ProtectedRoute |
+| `/player` | Cloud Player | ProtectedRoute |
 | 其他 | 404 訊息 | 公開 fallback |
 
 `src/pages/todolist/todolist.js` 有 TodoList 元件，但目前沒有掛載至路由或導覽。
@@ -68,6 +69,7 @@
 - **WorkoutTimer**：清單及計時流程使用 `src/data/workouttimer.js` 的靜態資料；`:tid` 對應資料 id。可開始、暫停及重新開始計時，並以狀態訊息回報開始、暫停或完成；找不到計時資料或步驟時顯示返回清單的提示。
 - **Login**：帳號與密碼欄位為必填；密碼不符時顯示錯誤訊息。
 - **Settings**：目前為簡單頁面。
+- **Cloud Player**：使用者輸入 Google Drive API Key 與資料夾 ID，透過 `useStorage` 依登入名稱保存設定，並載入資料夾內的 MP3、MP4 檔案播放。此 API Key 模式需資料夾與媒體檔案可公開讀取；私人 Drive 存取需另行整合 Google OAuth。
 - **TodoList**：元件檔案存在但尚未路由整合。
 
 `src/data/weather.js` 對 `https://api.open-meteo.com/v1/forecast` 發出 `fetch`，傳送緯度、經度、每日欄位、時間格式、預報天數及時區，並將回傳值轉換成元件使用的欄位。程式碼沒有配置 API key 或環境變數。API 可用性及實際回應未於本次檢查驗證。
