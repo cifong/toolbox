@@ -68,8 +68,8 @@
 - **Worksignin**：上班時間設定與打卡時間保存於 localStorage，並計算預估下班時間。打卡前會檢查時數範圍及工作時間是否大於請假時間；打卡結果或設定錯誤會顯示狀態訊息。
 - **WorkoutTimer**：清單及計時流程使用 `src/data/workouttimer.js` 的靜態資料；`:tid` 對應資料 id。可開始、暫停及重新開始計時，並以狀態訊息回報開始、暫停或完成；找不到計時資料或步驟時顯示返回清單的提示。
 - **Login**：帳號與密碼欄位為必填；密碼不符時顯示錯誤訊息。
-- **Settings**：目前為簡單頁面。
-- **Cloud Player**：使用者輸入 Google Drive API Key 與資料夾 ID，透過 `useStorage` 依登入名稱保存設定，並載入資料夾內的 MP3、MP4 檔案播放。此 API Key 模式需資料夾與媒體檔案可公開讀取；私人 Drive 存取需另行整合 Google OAuth。
+- **Settings**：管理 Google Drive 播放器的 API Key 與資料夾 ID；透過 `useStorage` 依登入名稱保存於目前瀏覽器的 `localStorage`，沿用 `drivePlayerSettings-${token}` 儲存鍵。API Key 欄位以密碼欄位遮蔽顯示，但資料仍以未加密形式存於瀏覽器。頁面提供前往 Cloud Player 的連結。
+- **Cloud Player**：從上述設定讀取 Google Drive API Key 與資料夾 ID，載入資料夾內的 MP3、MP4 檔案播放。尚未設定時提供前往 Settings 的入口；讀取資料夾失敗時提供編輯設定入口；成功載入播放清單後不顯示播放器內的編輯入口。此 API Key 模式需資料夾與媒體檔案可公開讀取；私人 Drive 存取需另行整合 Google OAuth。尚未實作 Google 試算表設定同步。
 - **TodoList**：元件檔案存在但尚未路由整合。
 
 `src/data/weather.js` 對 `https://api.open-meteo.com/v1/forecast` 發出 `fetch`，傳送緯度、經度、每日欄位、時間格式、預報天數及時區，並將回傳值轉換成元件使用的欄位。程式碼沒有配置 API key 或環境變數。API 可用性及實際回應未於本次檢查驗證。
@@ -77,6 +77,6 @@
 ## 品質與部署設定
 
 - 沒有獨立 lint script 或 Prettier 設定檔。
-- 測試由 `npm test` 執行；目前 6 個測試檔、14 個案例，涵蓋登入/路由、`useStorage`、習慣追蹤、餐費、打卡及天氣資料。
+- 測試由 `npm test` 執行；目前 8 個測試檔、20 個案例，涵蓋登入/路由、`useStorage`、習慣追蹤、餐費、打卡、天氣資料，以及 Settings 與 Cloud Player 設定流程。
 - `.github/workflows/ci.yml` 在針對 `main` 的 Pull Request 與推送時執行 `npm ci`、`npm test` 和 `npm run build`，不會自動部署。遠端工作流程尚未經 GitHub 實際執行確認。
 - GitHub Pages 設定位於 `package.json` 與 `vite.config.mjs`：`homepage` 指向 `https://cifong.github.io/toolbox`，Vite `base` 為 `/toolbox/`，建置輸出至 `build/`；手動 `deploy` script 使用 `gh-pages -d build`。`HashRouter` 支援以 hash 表示前端路徑。
