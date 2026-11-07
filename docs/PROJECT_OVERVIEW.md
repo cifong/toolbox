@@ -78,5 +78,5 @@
 
 - 沒有獨立 lint script 或 Prettier 設定檔。
 - 測試由 `npm test` 執行；目前 6 個測試檔、14 個案例，涵蓋登入/路由、`useStorage`、習慣追蹤、餐費、打卡及天氣資料。
-- `.github/workflows/ci-cd.yml` 在針對 `main` 的 Pull Request 與推送時執行 `npm ci`、`npm test` 和 `npm run build`；只有推送至 `main` 且前置工作成功時才部署 GitHub Pages。遠端工作流程及 Pages 設定尚未經 GitHub 實際執行確認。
+- `.github/workflows/ci.yml` 在針對 `main` 的 Pull Request 與推送時執行 `npm ci`、`npm test` 和 `npm run build`，不會自動部署。遠端工作流程尚未經 GitHub 實際執行確認。
 - GitHub Pages 設定位於 `package.json` 與 `vite.config.mjs`：`homepage` 指向 `https://cifong.github.io/toolbox`，Vite `base` 為 `/toolbox/`，建置輸出至 `build/`；手動 `deploy` script 使用 `gh-pages -d build`。`HashRouter` 支援以 hash 表示前端路徑。
