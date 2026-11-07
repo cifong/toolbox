@@ -9,7 +9,7 @@
 | 路由 | React Router DOM 7.18.5，入口使用 `HashRouter` |
 | 樣式 | `src/assets/App.css` |
 | 狀態 | React Context（登入狀態）及 React Hooks；頁面資料使用瀏覽器 `localStorage` |
-| 測試 | Vitest、jsdom、React Testing Library；目前只有一個範例測試 |
+| 測試 | Vitest、jsdom、React Testing Library；涵蓋登入/路由、localStorage、習慣、餐費、打卡及天氣資料 |
 | 外部服務 | Dashboard 天氣資料使用 Open-Meteo Forecast API |
 
 版本為目前 lockfile 與安裝目錄確認結果；`package.json` 宣告的是版本範圍。
@@ -77,5 +77,6 @@
 ## 品質與部署設定
 
 - 沒有獨立 lint script 或 Prettier 設定檔。
-- `src/App.test.jsx` 是單一範例測試，實際測試結果尚未確認。
-- GitHub Pages 設定位於 `package.json` 與 `vite.config.mjs`：`homepage` 指向 `https://cifong.github.io/toolbox`，Vite `base` 為 `/toolbox/`，建置輸出至 `build/`，`deploy` 使用 `gh-pages -d build`。`HashRouter` 支援以 hash 表示前端路徑。遠端 Pages 設定與部署狀態尚未確認。
+- 測試由 `npm test` 執行；目前 6 個測試檔、14 個案例，涵蓋登入/路由、`useStorage`、習慣追蹤、餐費、打卡及天氣資料。
+- `.github/workflows/ci-cd.yml` 在針對 `main` 的 Pull Request 與推送時執行 `npm ci`、`npm test` 和 `npm run build`；只有推送至 `main` 且前置工作成功時才部署 GitHub Pages。遠端工作流程及 Pages 設定尚未經 GitHub 實際執行確認。
+- GitHub Pages 設定位於 `package.json` 與 `vite.config.mjs`：`homepage` 指向 `https://cifong.github.io/toolbox`，Vite `base` 為 `/toolbox/`，建置輸出至 `build/`；手動 `deploy` script 使用 `gh-pages -d build`。`HashRouter` 支援以 hash 表示前端路徑。

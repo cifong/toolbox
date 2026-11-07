@@ -12,7 +12,7 @@ export default function Login() {
     const [error, setError] = React.useState("");
     
     if (token) {
-        return <Navigate to={"/dashboard"} replace state={{ from: location }} />;
+        return <Navigate to={location.state?.from?.pathname || "/dashboard"} replace state={{ from: location }} />;
     }
     const testpassword = 'qqqqqq';
     const handleSubmit = (e) => {
